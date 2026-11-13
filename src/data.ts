@@ -1,0 +1,45 @@
+export type Weapon = {
+  id: string;
+  name: string;
+  type: string;
+  power: number;
+  tier: "common" | "rare" | "epic" | "legendary";
+  price: number;
+};
+
+export const WEAPONS: Weapon[] = [
+  { id: "w1", name: "Malorian Arms 3516", type: "Power pistol", power: 91, tier: "legendary", price: 28400 },
+  { id: "w2", name: "Widow Maker", type: "Tech precision rifle", power: 87, tier: "epic", price: 19750 },
+  { id: "w3", name: "Skippy", type: "Smart pistol", power: 74, tier: "epic", price: 12200 },
+  { id: "w4", name: "Overture", type: "Power revolver", power: 82, tier: "rare", price: 8300 },
+  { id: "w5", name: "Dying Night", type: "Power pistol", power: 68, tier: "rare", price: 6100 },
+  { id: "w6", name: "Saratoga", type: "Power SMG", power: 63, tier: "common", price: 3400 },
+  { id: "w7", name: "Nekomata", type: "Tech sniper rifle", power: 89, tier: "epic", price: 16900 },
+  { id: "w8", name: "Carnage", type: "Power shotgun", power: 85, tier: "rare", price: 9800 },
+];
+
+export const CYBERWARE = [
+  { id: "c1", name: "Kiroshi Optics Mk.3", effect: "Threat detection, 8x zoom, target tagging." },
+  { id: "c2", name: "Sandevistan", effect: "Slows perceived time for 8 seconds." },
+  { id: "c3", name: "Subdermal armor", effect: "+180 armor. Rated for small arms." },
+  { id: "c4", name: "Gorilla Arms", effect: "Hydraulic fists. Opens stubborn doors." },
+  { id: "c5", name: "Cyberdeck: Tetratronic Rippler", effect: "Ultimate quickhacks spread to nearby targets." },
+] as const;
+
+export const TIER_TONE = {
+  common: "neutral",
+  rare: "accent",
+  epic: "warn",
+  legendary: "danger",
+} as const;
+
+export const ROLES = ["Solo", "Netrunner", "Techie", "Nomad", "Corpo", "Fixer"];
+
+export const DISTRICTS = [
+  "Watson",
+  "Westbrook",
+  "City Center",
+  "Santo Domingo",
+  "Pacifica",
+  "Heywood",
+];

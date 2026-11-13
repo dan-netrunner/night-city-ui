@@ -1,0 +1,325 @@
+/* ============================================================
+   Night City UI — tokens & theme definitions
+   Four skins, one component contract. Everything below only
+   sets custom properties; layout and looks live in ui.css.
+   ============================================================ */
+
+:root,
+[data-theme="neokitsch"] {
+  --bg: #0b0c0f;
+  --bg-2: #101420;
+  --panel: #121a2c;
+  --panel-2: #19264d;
+  --ink: #eaf3f1;
+  --ink-dim: #b7c8c9;
+  --ink-faint: #7f9395;
+  --line: #27324a;
+  --line-strong: #3d4e70;
+  --accent: #7cc6ba;
+  --accent-2: #ff4f8b;
+  --accent-ink: #04120f;
+  --ok: #7cc6ba;
+  --ok-ink: #04120f;
+  --warn: #eeb92a;
+  --warn-ink: #1c1405;
+  --danger: #ff4f8b;
+  --danger-ink: #1a0410;
+  --accent-ghost: rgb(124 198 186 / 0.12);
+
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-btn: 0px;
+  --border-w: 1px;
+
+  --font-display: "Orbitron", "Rajdhani", sans-serif;
+  --font-ui: "Rajdhani", sans-serif;
+  --font-body: "Rajdhani", sans-serif;
+  --font-mono: "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --display-weight: 700;
+  --display-tracking: 0.05em;
+
+  --panel-shadow: 0 24px 60px -40px #000, inset 0 1px 0 rgb(255 255 255 / 0.06);
+  --btn-shadow: 0 8px 26px -14px rgb(124 198 186 / 0.7);
+  --btn-shadow-hover: 0 12px 34px -12px rgb(124 198 186 / 0.9);
+  --glow: 0 0 18px rgb(124 198 186 / 0.3);
+  --focus-glow: 0 0 0 3px rgb(124 198 186 / 0.25);
+  --field-bg: rgb(255 255 255 / 0.035);
+  --panel-head-bg: linear-gradient(90deg, rgb(124 198 186 / 0.13), transparent 72%);
+  --panel-foot-bg: rgb(255 255 255 / 0.02);
+  --slider-thumb-radius: 0;
+  --modal-backdrop: rgb(3 4 6 / 0.8);
+  --bar-bg: rgb(11 12 15 / 0.84);
+  --clip-btn: polygon(10px 0, 100% 0, 100% 100%, 0 100%, 0 10px);
+  --clip-panel: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 0 100%);
+  --clip-tab: polygon(8px 0, 100% 0, 100% 100%, 0 100%);
+  --clip-mark: polygon(25% 0, 75% 0, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0 75%, 0 25%);
+  --noise-opacity: 0.14;
+  --page-bg:
+    radial-gradient(1000px 620px at 82% -12%, rgb(124 198 186 / 0.17), transparent 62%),
+    radial-gradient(760px 540px at 2% 108%, rgb(255 79 139 / 0.12), transparent 62%),
+    repeating-linear-gradient(115deg, rgb(255 255 255 / 0.016) 0 1px, transparent 1px 9px),
+    linear-gradient(180deg, #0c0e14, #08090c);
+}
+
+[data-theme="entropism"] {
+  --bg: #160d10;
+  --bg-2: #1d1216;
+  --panel: #211519;
+  --panel-2: #2a1b20;
+  --ink: #efe2cd;
+  --ink-dim: #c6b29f;
+  --ink-faint: #937c72;
+  --line: #3f2a2e;
+  --line-strong: #5f3d41;
+  --accent: #e73132;
+  --accent-2: #c5ab41;
+  --accent-ink: #170405;
+  --ok: #7cc6ba;
+  --ok-ink: #06120f;
+  --warn: #eeb92a;
+  --warn-ink: #1c1405;
+  --danger: #ff5b6e;
+  --danger-ink: #1a0407;
+  --accent-ghost: rgb(231 49 50 / 0.12);
+
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-btn: 0px;
+  --border-w: 1px;
+
+  --font-display: "Rajdhani", sans-serif;
+  --font-ui: "Rajdhani", sans-serif;
+  --font-body: "Rajdhani", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --display-weight: 700;
+  --display-tracking: 0.04em;
+
+  --panel-shadow: inset 0 0 0 1px rgb(255 238 210 / 0.03), 4px 4px 0 rgb(0 0 0 / 0.35);
+  --btn-shadow: 2px 2px 0 rgb(0 0 0 / 0.55);
+  --btn-shadow-hover: 3px 3px 0 rgb(0 0 0 / 0.6);
+  --glow: 0 0 0 transparent;
+  --focus-glow: 0 0 0 3px rgb(231 49 50 / 0.22);
+  --field-bg: #120b0d;
+  --panel-head-bg: rgb(0 0 0 / 0.18);
+  --panel-foot-bg: rgb(0 0 0 / 0.18);
+  --slider-thumb-radius: 0;
+  --modal-backdrop: rgb(10 5 7 / 0.82);
+  --bar-bg: rgb(22 13 16 / 0.9);
+  --clip-btn: polygon(0 0, 100% 0, 100% calc(100% - 5px), calc(100% - 5px) 100%, 0 100%);
+  --clip-panel: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+  --clip-tab: polygon(0 100%, 7px 0, 100% 0, 100% 100%);
+  --clip-mark: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);
+  --noise-opacity: 0.4;
+  --page-bg:
+    radial-gradient(1100px 600px at 86% -10%, rgb(231 49 50 / 0.14), transparent 64%),
+    radial-gradient(900px 520px at -8% 108%, rgb(197 171 65 / 0.09), transparent 62%),
+    repeating-linear-gradient(93deg, rgb(255 255 255 / 0.022) 0 1px, transparent 1px 7px),
+    linear-gradient(165deg, #1a0f13, #130a0d);
+}
+
+[data-theme="kitsch"] {
+  --bg: #190f14;
+  --bg-2: #221219;
+  --panel: #2a1620;
+  --panel-2: #331b27;
+  --ink: #fdeff4;
+  --ink-dim: #e0bccb;
+  --ink-faint: #a98598;
+  --line: #55283a;
+  --line-strong: #7c3a53;
+  --accent: #ff4f8b;
+  --accent-2: #aacdf6;
+  --accent-ink: #1b0410;
+  --ok: #7cc6ba;
+  --ok-ink: #04150f;
+  --warn: #eeb92a;
+  --warn-ink: #1c1404;
+  --danger: #e73132;
+  --danger-ink: #1a0407;
+  --accent-ghost: rgb(255 79 139 / 0.14);
+
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-btn: 0px;
+  --border-w: 3px;
+
+  --font-display: "Bungee", sans-serif;
+  --font-ui: "Rajdhani", sans-serif;
+  --font-body: "Rajdhani", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --display-weight: 400;
+  --display-tracking: 0.005em;
+
+  --panel-shadow: 7px 7px 0 rgb(13 7 11 / 0.9);
+  --btn-shadow: 4px 4px 0 #12080d;
+  --btn-shadow-hover: 6px 6px 0 #aacdf6;
+  --glow: 0 0 22px rgb(255 79 139 / 0.45);
+  --focus-glow: 0 0 0 3px rgb(255 79 139 / 0.3);
+  --field-bg: #210f19;
+  --panel-head-bg:
+    radial-gradient(circle at 7px 7px, rgb(255 255 255 / 0.09) 2.5px, transparent 3px) 0 0 / 15px 15px,
+    #331b27;
+  --panel-foot-bg: #331b27;
+  --slider-thumb-radius: 0;
+  --modal-backdrop: rgb(14 6 10 / 0.84);
+  --bar-bg: rgb(25 15 20 / 0.9);
+  --clip-btn: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px);
+  --clip-panel: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 14px 100%, 0 calc(100% - 14px));
+  --clip-tab: polygon(8px 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
+  --clip-mark: polygon(50% 0, 100% 30%, 100% 70%, 50% 100%, 0 70%, 0 30%);
+  --noise-opacity: 0.18;
+  --page-bg:
+    radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.05) 1px, transparent 0) 0 0 / 24px 24px,
+    radial-gradient(950px 560px at 92% -4%, rgb(255 79 139 / 0.22), transparent 62%),
+    radial-gradient(800px 520px at -6% 106%, rgb(170 205 246 / 0.15), transparent 62%),
+    linear-gradient(160deg, #200f17, #150a0f 62%);
+}
+
+[data-theme="neomilitarism"] {
+  --bg: #0c0c0b;
+  --bg-2: #101319;
+  --panel: #141824;
+  --panel-2: #1a2030;
+  --ink: #e9e4d2;
+  --ink-dim: #b3b3a4;
+  --ink-faint: #7c7f78;
+  --line: #2a2f3f;
+  --line-strong: #414a63;
+  --accent: #eeb92a;
+  --accent-2: #7cc6ba;
+  --accent-ink: #141001;
+  --ok: #7cc6ba;
+  --ok-ink: #06120f;
+  --warn: #eeb92a;
+  --warn-ink: #1b1305;
+  --danger: #e73132;
+  --danger-ink: #1c0705;
+  --accent-ghost: rgb(238 185 42 / 0.09);
+
+  --radius: 0px;
+  --radius-sm: 0px;
+  --radius-btn: 0px;
+  --border-w: 1px;
+
+  --font-display: "Bebas Neue", "Rajdhani", sans-serif;
+  --font-ui: "Rajdhani", sans-serif;
+  --font-body: "Rajdhani", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --display-weight: 400;
+  --display-tracking: 0.09em;
+
+  --panel-shadow: inset 0 0 0 1px rgb(238 185 42 / 0.04), 0 16px 34px -28px #000;
+  --btn-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.28);
+  --btn-shadow-hover: inset 0 0 0 1px rgb(0 0 0 / 0.38), 0 0 18px -6px rgb(238 185 42 / 0.55);
+  --glow: 0 0 12px rgb(238 185 42 / 0.35);
+  --focus-glow: 0 0 0 2px rgb(238 185 42 / 0.35);
+  --field-bg: #090a0e;
+  --panel-head-bg: linear-gradient(90deg, rgb(238 185 42 / 0.08), transparent 60%);
+  --panel-foot-bg: rgb(0 0 0 / 0.18);
+  --slider-thumb-radius: 0;
+  --modal-backdrop: rgb(4 4 4 / 0.86);
+  --bar-bg: rgb(12 12 11 / 0.92);
+  --clip-btn: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+  --clip-panel: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+  --clip-tab: polygon(0 0, calc(100% - 12px) 0, 100% 100%, 0 100%);
+  --clip-mark: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  --noise-opacity: 0.26;
+  --page-bg:
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 0.22) 0 1px, transparent 1px 3px),
+    radial-gradient(950px 560px at 84% -8%, rgb(238 185 42 / 0.12), transparent 64%),
+    radial-gradient(700px 480px at 0% 105%, rgb(25 38 77 / 0.55), transparent 62%),
+    linear-gradient(165deg, #101218, #0a0a09);
+}
+
+/* — base — */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--bg);
+  background-image: var(--page-bg);
+  background-attachment: fixed;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: var(--accent);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+:where(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+.app-noise {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: var(--noise-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
