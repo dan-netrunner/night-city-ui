@@ -1349,3 +1349,21 @@ code {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Guide Color Lab ---------- */
+
+.guide-color-row {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.guide-color-row input[type="color"] {
+  width: 44px;
+  height: 38px;
+  padding: 2px;
+  background: var(--field-bg);
+  border: 1px solid var(--line-strong);
+  cursor: pointer;
+}

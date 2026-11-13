@@ -4,12 +4,14 @@ import { Home } from "./pages/Home";
 import { ComponentsPage } from "./pages/ComponentsPage";
 import { Playground } from "./pages/Playground";
 import { ThemesPage } from "./pages/ThemesPage";
+import { GuidePage } from "./pages/GuidePage";
 
 const ROUTES = [
   { id: "home", label: "Overview" },
   { id: "components", label: "Components" },
   { id: "playground", label: "Playground" },
   { id: "themes", label: "Themes" },
+  { id: "guide", label: "Guide" },
 ] as const;
 
 type RouteId = (typeof ROUTES)[number]["id"];
@@ -103,6 +105,7 @@ function Shell() {
         {route === "components" && <ComponentsPage />}
         {route === "playground" && <Playground />}
         {route === "themes" && <ThemesPage />}
+        {route === "guide" && <GuidePage />}
       </main>
 
       <footer className="footer">
