@@ -9,6 +9,8 @@ A React + TypeScript component kit inspired by the four design languages of Cybe
 - **Interactive Component Workbench** on the Components page to test props live and copy JSX snippets with one click.
 - **Operator Playground** dashboard built exclusively from the kit.
 
+> 📖 **Guía en español:** Consulta [GUIA_DE_USO.md](./GUIA_DE_USO.md) para ver ejemplos de uso y cómo modificar los colores o crear nuevos temas.
+
 ## Local Development
 
 ```bash
