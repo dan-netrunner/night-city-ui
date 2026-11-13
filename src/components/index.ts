@@ -22,3 +22,4 @@ export {
   type AlertProps,
 } from "./Display";
 export { Modal, type ModalProps } from "./Modal";
+export { CodeBlock, type CodeBlockProps } from "./CodeBlock";

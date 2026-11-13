@@ -14,6 +14,7 @@ import {
   Toggle,
 } from "../components";
 import { ROLES, TIER_TONE, WEAPONS } from "../data";
+import { ComponentWorkbench } from "../components/ComponentWorkbench";
 import { PageHead } from "./PageHead";
 
 const eddies = (value: number) => `€$${value.toLocaleString("en-US")}`;
@@ -29,22 +30,24 @@ export function ComponentsPage() {
       <PageHead
         eyebrow="Component catalog"
         title="Every part, four skins"
-        lead="Interactive specimens, not screenshots. Change the theme in the header and every control below follows."
+        lead="Interactive specimens, not screenshots. Test props live, copy JSX snippets, or change the theme in the header."
       >
-        <Badge tone="accent" solid>
-          13 components
+        <Badge tone="accent" solid pulse>
+          14 components
         </Badge>
       </PageHead>
 
+      <ComponentWorkbench />
+
       <div className="comp-grid">
-        <Panel className="span-4" kicker="// 01 actions" title="Buttons">
+        <Panel className="span-4" kicker="// 01 actions" title="Buttons" telemetry="BTN.01">
           <div className="demo-stack">
             <div className="demo-row">
-              <Button>Primary</Button>
+              <Button code="01">Primary</Button>
               <Button variant="ghost">Ghost</Button>
             </div>
             <div className="demo-row">
-              <Button variant="outline">Outline</Button>
+              <Button variant="outline" code="NET">Outline</Button>
               <Button variant="danger">Danger</Button>
             </div>
             <div className="demo-row">
@@ -121,11 +124,11 @@ export function ComponentsPage() {
           </div>
         </Panel>
 
-        <Panel className="span-4" kicker="// 05 data" title="Progress">
+        <Panel className="span-4" kicker="// 05 data" title="Progress" telemetry="HUD.05">
           <div className="demo-stack">
             <Progress label="Street cred" value={72} />
-            <Progress label="Build integrity" value={88} tone="ok" />
-            <Progress label="Trace risk" value={23} tone="danger" />
+            <Progress label="RAM deck (segmented)" value={84} tone="ok" segmented />
+            <Progress label="Trace risk" value={23} tone="danger" segmented />
             <Progress label="Unknown signal" value={51} showValue={false} />
           </div>
         </Panel>

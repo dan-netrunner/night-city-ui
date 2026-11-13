@@ -5,6 +5,8 @@ export type PanelProps = HTMLAttributes<HTMLDivElement> & {
   kicker?: string;
   actions?: ReactNode;
   footer?: ReactNode;
+  /** Optional corner telemetry stamp (e.g. "SYS // 01"). */
+  telemetry?: string;
   accent?: boolean;
   flush?: boolean;
 };
@@ -14,13 +16,14 @@ export function Panel({
   kicker,
   actions,
   footer,
+  telemetry,
   accent = false,
   flush = false,
   className = "",
   children,
   ...props
 }: PanelProps) {
-  const hasHead = Boolean(title || kicker || actions);
+  const hasHead = Boolean(title || kicker || actions || telemetry);
   const classes = [
     "cp-panel",
     accent && "cp-panel--accent",
@@ -38,7 +41,16 @@ export function Panel({
             {kicker && <div className="cp-panel__kicker">{kicker}</div>}
             {title && <h3 className="cp-panel__title">{title}</h3>}
           </div>
-          {actions && <div className="cp-panel__actions">{actions}</div>}
+          {(actions || telemetry) && (
+            <div className="cp-panel__actions">
+              {telemetry && (
+                <span className="cp-panel__telemetry" aria-hidden="true">
+                  {telemetry}
+                </span>
+              )}
+              {actions}
+            </div>
+          )}
         </div>
       )}
       <div className="cp-panel__body">{children}</div>

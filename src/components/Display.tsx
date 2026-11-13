@@ -5,20 +5,24 @@ type Tone = "neutral" | "accent" | "ok" | "warn" | "danger";
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
   tone?: Tone;
   solid?: boolean;
+  /** Renders a pulsing HUD status node before the label. */
+  pulse?: boolean;
 };
 
 export function Badge({
   tone = "neutral",
   solid = false,
+  pulse = false,
   className = "",
   children,
   ...props
 }: BadgeProps) {
   return (
     <span
-      className={`cp-badge cp-badge--${tone}${solid ? " cp-badge--solid" : ""} ${className}`}
+      className={`cp-badge cp-badge--${tone}${solid ? " cp-badge--solid" : ""}${pulse ? " cp-badge--pulse" : ""} ${className}`}
       {...props}
     >
+      {pulse && <span className="cp-badge__node" aria-hidden="true" />}
       {children}
     </span>
   );
@@ -30,6 +34,9 @@ export type ProgressProps = {
   label?: ReactNode;
   showValue?: boolean;
   tone?: "accent" | "ok" | "warn" | "danger";
+  /** Renders discrete Cyberpunk HUD segments instead of a continuous bar. */
+  segmented?: boolean;
+  segments?: number;
   className?: string;
 };
 
@@ -39,11 +46,15 @@ export function Progress({
   label,
   showValue = true,
   tone = "accent",
+  segmented = false,
+  segments = 12,
   className = "",
 }: ProgressProps) {
   const safeMax = max > 0 ? max : 100;
   const clamped = Math.min(Math.max(value, 0), safeMax);
   const percent = Math.round((clamped / safeMax) * 100);
+  const totalSegments = Math.max(4, Math.min(24, segments));
+  const activeSegments = Math.round((percent / 100) * totalSegments);
 
   return (
     <div className={`cp-progress ${className}`}>
@@ -53,19 +64,37 @@ export function Progress({
           {showValue && <span className="cp-progress__value">{percent}%</span>}
         </div>
       )}
-      <div
-        className="cp-progress__track"
-        role="progressbar"
-        aria-valuemin={0}
-        aria-valuemax={safeMax}
-        aria-valuenow={clamped}
-        aria-label={typeof label === "string" ? label : undefined}
-      >
-        <span
-          className={`cp-progress__fill cp-progress__fill--${tone}`}
-          style={{ width: `${percent}%` }}
-        />
-      </div>
+      {segmented ? (
+        <div
+          className="cp-progress__segments"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={safeMax}
+          aria-valuenow={clamped}
+          aria-label={typeof label === "string" ? label : undefined}
+        >
+          {Array.from({ length: totalSegments }, (_, index) => (
+            <span
+              key={index}
+              className={`cp-progress__seg${index < activeSegments ? ` is-filled cp-progress__fill--${tone}` : ""}`}
+            />
+          ))}
+        </div>
+      ) : (
+        <div
+          className="cp-progress__track"
+          role="progressbar"
+          aria-valuemin={0}
+          aria-valuemax={safeMax}
+          aria-valuenow={clamped}
+          aria-label={typeof label === "string" ? label : undefined}
+        >
+          <span
+            className={`cp-progress__fill cp-progress__fill--${tone}`}
+            style={{ width: `${percent}%` }}
+          />
+        </div>
+      )}
     </div>
   );
 }

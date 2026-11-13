@@ -66,8 +66,9 @@ function HeroPanel() {
       className="hero-panel"
       kicker="// NCPD DATABASE"
       title="Subject profile"
+      telemetry="SYS // 2077"
       accent
-      actions={<Badge tone="ok">Active</Badge>}
+      actions={<Badge tone="ok" pulse>Active</Badge>}
       footer={
         <>
           <span className="mono-faint">SKIN: {meta.name.toUpperCase()}</span>
@@ -93,7 +94,7 @@ function HeroPanel() {
             <Badge tone="warn">Wanted</Badge>
           </div>
           <Progress label="Street cred" value={72} />
-          <Progress label="Cyberware load" value={46} tone="warn" />
+          <Progress label="Cyberware load" value={46} tone="warn" segmented />
         </div>
       </div>
       <dl className="dossier__stats">
