@@ -59,6 +59,21 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET }}
 
+      - name: Verify the version reached the registry
+        if: steps.check.outputs.published == 'false'
+        run: |
+          if npm view "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }}" version >/dev/null 2>&1; then
+            echo "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }} is live on npm."
+            exit 0
+          fi
+          echo "::error::npm accepted the upload but the version is not public. It was staged for 2FA approval."
+          echo "A maintainer must approve it once:"
+          echo "  npm login"
+          echo "  npm stage list ${{ steps.pkg.outputs.name }}"
+          echo "  npm stage approve <stage-id>"
+          echo "Or configure a Trusted Publisher (GitHub Actions) for this package on npmjs.com."
+          exit 1
+
       - name: Report skip
         if: steps.check.outputs.published == 'true'
         run: |

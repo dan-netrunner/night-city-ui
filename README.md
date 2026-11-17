@@ -338,6 +338,16 @@ git push            # merge to main publishes the new version
 
 If `package.json` still has a version that already exists on npm, the workflow skips the publish and reports it, so merges without a bump stay green.
 
+> **Staged publishes:** newer npm accounts stage a publish instead of releasing it, deferring the 2FA check. If the workflow reports that the version is not public, a maintainer must approve it once:
+>
+> ```bash
+> npm login
+> npm stage list night-city-ui
+> npm stage approve <stage-id>
+> ```
+>
+> To publish straight from CI instead, add a **Trusted Publisher** (GitHub Actions, workflow `publish-npm.yml`) to the package on npmjs.com. The workflow already requests `id-token: write` and uses `--provenance`, so no token is needed in that model.
+
 Publishing locally is also possible:
 
 ```bash
