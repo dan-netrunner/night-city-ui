@@ -8,6 +8,7 @@ One component contract, four skins, zero UI dependencies. Every component is sem
 
 - **Live demo:** https://dan-netrunner.github.io/night-city-ui/
 - **Repository:** https://github.com/dan-netrunner/night-city-ui
+- **npm:** `npm install night-city-ui`
 - **License:** [MIT](./LICENSE) — free for personal and commercial use.
 
 ---
@@ -17,7 +18,8 @@ One component contract, four skins, zero UI dependencies. Every component is sem
 - **4 live themes** driven by `data-theme` and CSS custom properties.
 - **28 exported components** plus styled tables and documentation layout helpers.
 - **Accessible defaults:** native controls, visible focus rings, ARIA tabs, a real `<dialog>`, keyboard-operable accordions and tooltips.
-- **No runtime dependencies** beyond React and React DOM. Fonts ship as local files.
+- **No runtime dependencies** beyond React and React DOM.
+- **ESM + TypeScript types** built for bundlers, with the stylesheet shipped as `night-city-ui/style.css`.
 - **Interactive docs:** component workbench, live color lab, theme comparison and a full operator dashboard playground.
 - **GitHub Pages ready** with relative asset paths and a deploy workflow.
 
@@ -25,13 +27,29 @@ One component contract, four skins, zero UI dependencies. Every component is sem
 
 ## Requirements
 
-- Node.js 20 or newer
-- npm 10 or newer
-- React 19 (the project is tested with `react@19.3` and `@vitejs/plugin-react`)
+- React 18 or newer (peer dependency; the docs site is built with React 19)
+- Node.js 20 or newer and npm 10 or newer, only to run or build this repository
 
 ---
 
-## Quick start
+## Install
+
+```bash
+npm install night-city-ui
+```
+
+Then import the stylesheet once, and components anywhere:
+
+```tsx
+import "night-city-ui/style.css";
+import { Button, Panel, ThemeProvider } from "night-city-ui";
+```
+
+`night-city-ui` ships ESM (`dist/night-city-ui.js`) and TypeScript declarations (`dist/index.d.ts`). It does not bundle fonts — see [Fonts](#fonts).
+
+---
+
+## Run the docs site locally
 
 ```bash
 git clone git@github.com:dan-netrunner/night-city-ui.git
@@ -43,30 +61,19 @@ npm run dev
 The dev server prints a local URL (Vite default: `http://localhost:5173`). Other scripts:
 
 ```bash
-npm run build     # type-check with tsc and build dist/
-npm run preview   # serve the production build locally
+npm run build       # type-check with tsc and build the docs site into dist/
+npm run build:lib   # build the npm package (bundle + types) into dist/
+npm run preview     # serve the production build locally
 ```
 
-The kit is not published to npm. To use it in your own app, copy these into your project:
-
-```
-src/styles/tokens.css   # design tokens + the four themes
-src/styles/ui.css       # component styles
-src/theme.tsx           # ThemeProvider + useTheme
-src/components/         # the component sources
-```
-
-Then remove the demo-only pages and point your entry file at `ThemeProvider`.
 
 ---
 
 ## Minimal setup
 
 ```tsx
-import "./styles/tokens.css";
-import "./styles/ui.css";
-import { ThemeProvider } from "./theme";
-import { Badge, Button, Panel, Progress } from "./components";
+import "night-city-ui/style.css";
+import { Badge, Button, Panel, Progress, ThemeProvider } from "night-city-ui";
 
 export function App() {
   return (
@@ -90,6 +97,35 @@ export function App() {
 
 `ThemeProvider` writes `data-theme` on `<html>`, persists the choice in `localStorage` (`nc-theme`) and applies the saved theme before first paint to avoid a flash.
 
+### Fonts
+
+The stylesheet references these families, with system fallbacks:
+
+| Token | Family |
+| --- | --- |
+| `--font-display` / `--font-ui` / `--font-body` | Rajdhani, Orbitron, Bungee, Bebas Neue (per theme) |
+| `--font-mono` | Share Tech Mono |
+
+The kit does not bundle the font files. For the intended look, add the ones you need — this is exactly what the docs site does:
+
+```bash
+npm install @fontsource/rajdhani @fontsource/bebas-neue @fontsource/bungee @fontsource/orbitron @fontsource/share-tech-mono
+```
+
+```ts
+import "@fontsource/rajdhani/400.css";
+import "@fontsource/rajdhani/500.css";
+import "@fontsource/rajdhani/600.css";
+import "@fontsource/rajdhani/700.css";
+import "@fontsource/bebas-neue/400.css";
+import "@fontsource/bungee/400.css";
+import "@fontsource/orbitron/500.css";
+import "@fontsource/orbitron/700.css";
+import "@fontsource/share-tech-mono/400.css";
+```
+
+Without them the components still work and fall back to the system sans/mono stack.
+
 ---
 
 ## Theming
@@ -97,7 +133,7 @@ export function App() {
 ### Switch skins globally
 
 ```tsx
-import { useTheme } from "./theme";
+import { useTheme } from "night-city-ui";
 
 function ThemeMenu() {
   const { theme, setTheme, meta } = useTheme();
@@ -125,7 +161,7 @@ Available ids (used in `data-theme`): `neokitsch` (Hyper//Opulence, default), `e
 
 ### Create a custom theme
 
-All components read variables from `src/styles/tokens.css`. Override the ones you need:
+All components read variables from the bundled `tokens.css`. Override the ones you need:
 
 ```css
 [data-theme="custom"] {
@@ -163,7 +199,7 @@ A live color lab on the **Guide** page generates the CSS block for you.
 Import everything from one entry point:
 
 ```tsx
-import { Button, Panel, ToastStack } from "./components";
+import { Button, Panel, ToastStack } from "night-city-ui";
 ```
 
 ### Actions and surfaces
@@ -263,18 +299,48 @@ src/
     tokens.css    # design tokens and the four themes
     ui.css        # component styles
     app.css       # demo site layout only
+  index.ts        # package entry: styles + public exports
   theme.tsx       # ThemeProvider + useTheme
   App.tsx         # hash router + shell
   data.ts         # demo data
+vite.lib.config.ts  # library build (npm package)
+tsconfig.lib.json   # declaration emit
 ```
 
-Demo pages are not part of the component API; delete or replace them in your own app.
+Demo pages are not part of the component API; they are only exported by the docs site, never by the package entry.
 
 ---
 
-## Deployment
+## Publishing
 
-The workflow at `.github/workflows/deploy-pages.yml` builds `dist/` on every push or merge to `main` and force-pushes it to the **`gh-pages`** branch. `base: "./"` in `vite.config.ts` keeps asset paths relative, so the site works from the repository subpath.
+### npm
+
+`.github/workflows/publish-npm.yml` runs on every push or merge to `main` and with manual dispatch. It installs, runs `npm publish` (which triggers `prepublishOnly` → `npm run build:lib`) and publishes with provenance.
+
+Setup, once:
+
+1. Create the repository secret **`NPM_SECRET`** for the **environment `npm`** (Settings → Environments → `npm` → Environment secrets). Use an npm **automation** token or a granular token with read/write on `night-city-ui`.
+2. Keep `package.json` `name`, `version` and `repository` in sync.
+
+Then bump the version to ship:
+
+```bash
+npm version patch   # or minor / major
+git push            # merge to main publishes the new version
+```
+
+If `package.json` still has a version that already exists on npm, the workflow skips the publish and reports it, so merges without a bump stay green.
+
+Publishing locally is also possible:
+
+```bash
+npm login
+npm publish --access public
+```
+
+### GitHub Pages
+
+The workflow at `.github/workflows/deploy-pages.yml` builds the docs site into `dist/` with `npm run build` on every push or merge to `main` and force-pushes it to the **`gh-pages`** branch. `base: "./"` in `vite.config.ts` keeps asset paths relative, so the site works from the repository subpath.
 
 1. Push the repository to GitHub.
 2. Open **Settings → Pages → Build and deployment**.

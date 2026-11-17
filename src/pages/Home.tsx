@@ -1,4 +1,4 @@
-import { Badge, Button, Panel, Progress } from "../components";
+import { Badge, Button, CodeBlock, Panel, Progress } from "../components";
 import { THEMES, useTheme } from "../theme";
 
 function ThemeCard({ index }: { index: number }) {
@@ -174,6 +174,9 @@ export function Home() {
             <a className="cp-btn cp-btn--ghost cp-btn--lg" href="#/playground">
               Open playground
             </a>
+          </div>
+          <div className="hero__install">
+            <CodeBlock code="npm install night-city-ui" label="INSTALL // NPM" />
           </div>
           <dl className="hero__meta">
             <div>

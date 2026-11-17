@@ -11,10 +11,16 @@ import {
 import { useTheme } from "../theme";
 import { PageHead } from "./PageHead";
 
-const SETUP_SNIPPET = `import "./styles/tokens.css";
-import "./styles/ui.css";
-import { ThemeProvider } from "./theme";
-import { Button, Panel, Progress, Badge } from "./components";
+const INSTALL_SNIPPET = `npm install night-city-ui`;
+
+const SETUP_SNIPPET = `import "night-city-ui/style.css";
+import {
+  Badge,
+  Button,
+  Panel,
+  Progress,
+  ThemeProvider,
+} from "night-city-ui";
 
 export function App() {
   return (
@@ -28,7 +34,7 @@ export function App() {
   );
 }`;
 
-const SCOPED_THEME_SNIPPET = `import { useTheme } from "./theme";
+const SCOPED_THEME_SNIPPET = `import { useTheme } from "night-city-ui";
 
 // 1) Cambiar tema global con useTheme()
 const { theme, setTheme } = useTheme();
@@ -99,10 +105,10 @@ export function GuidePage() {
         >
           <div className="demo-stack">
             <p className="muted">
-              Import <code>tokens.css</code> and <code>ui.css</code>, wrap your root with{" "}
-              <code>ThemeProvider</code>, and import any component from{" "}
-              <code>src/components</code>.
+              Install the package, import its stylesheet once, and wrap your root with{" "}
+              <code>ThemeProvider</code>. Every component is a named export.
             </p>
+            <CodeBlock code={INSTALL_SNIPPET} label="SHELL // INSTALL" />
             <CodeBlock code={SETUP_SNIPPET} label="TSX // APP.TSX" />
           </div>
         </Panel>
@@ -132,8 +138,9 @@ export function GuidePage() {
           <div className="docs-grid">
             <div className="demo-stack">
               <p className="muted">
-                All components read CSS custom properties from <code>src/styles/tokens.css</code>.
-                Adjust the tokens below to preview a custom palette and copy the CSS block.
+                All components read CSS custom properties from the bundled{" "}
+                <code>tokens.css</code>. Adjust the tokens below to preview a custom
+                palette and copy the CSS block.
               </p>
 
               <div className="demo-grid">

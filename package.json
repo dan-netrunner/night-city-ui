@@ -1,27 +1,67 @@
 {
   "name": "night-city-ui",
-  "private": true,
   "version": "0.1.0",
+  "description": "Cyberpunk React component kit with four switchable themes, semantic markup and zero UI dependencies.",
   "license": "MIT",
   "type": "module",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/night-city-ui.js",
+  "module": "./dist/night-city-ui.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/night-city-ui.js"
+    },
+    "./style.css": "./dist/style.css",
+    "./package.json": "./package.json"
+  },
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dan-netrunner/night-city-ui.git"
+  },
+  "homepage": "https://dan-netrunner.github.io/night-city-ui/",
+  "bugs": {
+    "url": "https://github.com/dan-netrunner/night-city-ui/issues"
+  },
+  "keywords": [
+    "react",
+    "components",
+    "cyberpunk",
+    "ui",
+    "design-system",
+    "themes"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "build:lib": "vite build --config vite.lib.config.ts && tsc -p tsconfig.lib.json",
+    "prepublishOnly": "npm run build:lib",
     "preview": "vite preview"
   },
-  "dependencies": {
+  "peerDependencies": {
+    "react": ">=18",
+    "react-dom": ">=18"
+  },
+  "devDependencies": {
     "@fontsource/bebas-neue": "^5.3.0",
     "@fontsource/bungee": "^5.3.0",
     "@fontsource/orbitron": "^5.3.0",
     "@fontsource/rajdhani": "^5.3.0",
     "@fontsource/share-tech-mono": "^5.3.0",
-    "react": "^19.3.1",
-    "react-dom": "^19.3.1"
-  },
-  "devDependencies": {
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^5.2.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
     "typescript": "^5.9.0",
     "vite": "^7.3.8"
   }

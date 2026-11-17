@@ -4,16 +4,20 @@ Esta guía explica cómo usar los componentes de **Night City UI**, cómo cambia
 
 ---
 
-## 1. Uso básico en React
+## 1. Instalación y uso básico en React
+
+### Instalar el paquete
+
+```bash
+npm install night-city-ui
+```
 
 ### Envolver tu aplicación con `ThemeProvider`
-Importa los estilos base (`tokens.css` y `ui.css`) y envuelve tu aplicación con `ThemeProvider` (definido en `src/theme.tsx`):
+Importa la hoja de estilos una vez (`night-city-ui/style.css`, que incluye `tokens.css` y `ui.css`) y envuelve tu aplicación con `ThemeProvider`:
 
 ```tsx
-import "./styles/tokens.css";
-import "./styles/ui.css";
-import { ThemeProvider } from "./theme";
-import { Button, Panel, Progress, Badge } from "./components";
+import "night-city-ui/style.css";
+import { Badge, Button, Panel, Progress, ThemeProvider } from "night-city-ui";
 
 export function App() {
   return (
@@ -28,11 +32,30 @@ export function App() {
 }
 ```
 
+### Tipografías (opcional)
+El paquete no incluye las fuentes; el CSS usa familias con fallback al sistema. Para el look original:
+
+```bash
+npm install @fontsource/rajdhani @fontsource/bebas-neue @fontsource/bungee @fontsource/orbitron @fontsource/share-tech-mono
+```
+
+```ts
+import "@fontsource/rajdhani/400.css";
+import "@fontsource/rajdhani/500.css";
+import "@fontsource/rajdhani/600.css";
+import "@fontsource/rajdhani/700.css";
+import "@fontsource/bebas-neue/400.css";
+import "@fontsource/bungee/400.css";
+import "@fontsource/orbitron/500.css";
+import "@fontsource/orbitron/700.css";
+import "@fontsource/share-tech-mono/400.css";
+```
+
 ### Cambiar de tema dinámicamente
 Usa el hook `useTheme()` en cualquier componente hijo de `ThemeProvider`:
 
 ```tsx
-import { useTheme, THEMES } from "./theme";
+import { useTheme, THEMES } from "night-city-ui";
 
 function ThemeSelector() {
   const { theme, setTheme } = useTheme();
@@ -70,7 +93,7 @@ Temas disponibles: `"neokitsch"` | `"entropism"` | `"kitsch"` | `"neomilitarism"
 
 ## 2. Catálogo rápido de componentes y props destacadas
 
-Todos los componentes se exportan desde `src/components/index.ts`:
+Todos los componentes se exportan desde el paquete:
 
 - **`Button`**: `variant` (`"primary" | "ghost" | "outline" | "danger"`), `size` (`"sm" | "md" | "lg"`), `block`, `code` (etiqueta micro-telemétrica, ej. `"01"`).
 - **`Panel`**: `title`, `kicker`, `telemetry` (etiqueta en cabecera, ej. `"SYS // 2077"`), `actions`, `footer`, `accent`, `flush`.
@@ -92,7 +115,9 @@ Todos los componentes se exportan desde `src/components/index.ts`:
 
 ## 3. Cómo modificar los colores
 
-Todos los colores, tipografías, bordes, sombras y recortes (`clip-path`) viven en **`src/styles/tokens.css`** como variables CSS (*custom properties*). Los componentes en `ui.css` solo consumen esas variables, por lo que cambiar un color actualiza toda la interfaz automáticamente.
+Todos los colores, tipografías, bordes, sombras y recortes (`clip-path`) viven en **`tokens.css`** (incluido en `night-city-ui/style.css`) como variables CSS (*custom properties*). Los componentes en `ui.css` solo consumen esas variables, por lo que cambiar un color actualiza toda la interfaz automáticamente.
+
+Si instalaste el paquete, no edites nada dentro de `node_modules`: sobrescribe las variables en tu propio CSS después de importar `night-city-ui/style.css`. Los pasos siguientes asumen que trabajas sobre el código fuente del repositorio.
 
 ### Variables de color principales
 
