@@ -34,6 +34,7 @@ npm run dev   # http://localhost:5173
 - **Naming:** classes are prefixed `cp-`. A new component means one file in `src/components/`, an export in `src/components/index.ts` (it reaches the package through `src/index.ts`), and its props type exported.
 - **Native elements first** — `<button>`, `<input>`, `<details>`, `<dialog>` — then ARIA only where the platform can't express the semantics. Keep the visible focus ring, honor `prefers-reduced-motion`, and mark decorative texture `aria-hidden`. If you touch interaction, test it keyboard-only.
 - **No new runtime dependencies** beyond React. No fonts, textures, icons or other assets shipped from the game; names and inspiration are fine.
+- **Install scripts are allow-listed.** npm blocks dependency lifecycle scripts unless the package appears in `allowScripts` in `package.json` (today: `esbuild@0.28.2`). If a dev dependency legitimately needs one, run `npm install-scripts approve <name>@<version>` and commit the entry, so the review is visible in the diff. Dependabot opens at most a few grouped PRs a week; majors for `vite`/`typescript` are deliberate and stay out of that.
 - **Show it in the docs.** Add the component to the relevant page (`src/pages/ComponentsPage.tsx`, the Playground, or the Guide) so it is documented the day it lands. If theming behavior changes, update the Guide page and `GUIA_DE_USO.md` in the same PR.
 
 ## Checks before you open a PR
