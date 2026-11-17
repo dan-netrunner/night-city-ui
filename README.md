@@ -37,9 +37,7 @@ npm run preview    # serve the production build
 ## Releasing
 
 - **Site:** merging to `main` builds and deploys to `gh-pages` → https://dan-netrunner.github.io/night-city-ui/
-- **npm:** merging to `main` publishes `package.json`'s version (skipped when that version already exists). Run `npm version patch|minor|major` before merging to release.
-
-If npm stages the upload instead of releasing it (2FA), approve it once with `npm stage list night-city-ui` and `npm stage approve <stage-id>`, or add a Trusted Publisher for `publish-npm.yml` on npmjs.com.
+- **npm:** merging to `main` publishes `package.json`'s version (skipped when that version already exists). Run `npm version patch|minor|major` before merging to release. Auth is OIDC trusted publishing — no token secret. One-time setup: on npmjs.com → package → Settings → Trusted Publisher, add GitHub Actions with repo `dan-netrunner/night-city-ui`, workflow `publish-npm.yml`, environment `npm`, and allow `npm publish`; then set Publishing access to "Require 2FA and disallow tokens". If the publish still gets staged, approve it with `npm stage list night-city-ui` and `npm stage approve <stage-id>`.
 
 ## License
 

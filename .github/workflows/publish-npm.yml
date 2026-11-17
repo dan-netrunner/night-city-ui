@@ -1,8 +1,12 @@
 name: Publish to npm
 
 # Publishes the library build of this package to the npm registry.
-# The token lives in the repository secret NPM_SECRET, scoped to the
-# environment "npm" (Settings -> Environments -> npm).
+#
+# Auth is OIDC trusted publishing: no token is stored anywhere. The
+# package settings on npmjs.com must list this workflow as a trusted
+# publisher (GitHub Actions, repo dan-netrunner/night-city-ui, workflow
+# publish-npm.yml, environment "npm") and allow `npm publish`.
+# See docs.npmjs.com/trusted-publishers.
 #
 # Runs on every push/merge to main, but only publishes when package.json
 # carries a version that does not exist on npm yet. Bump the version to ship.
@@ -13,7 +17,7 @@ on:
 
 permissions:
   contents: read
-  id-token: write # required for npm provenance
+  id-token: write # required for OIDC auth and provenance
 
 concurrency:
   group: "npm-publish"
@@ -31,8 +35,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
           registry-url: "https://registry.npmjs.org"
+          # no dependency cache in release builds
+
+      - name: Upgrade npm
+        # Trusted publishing needs npm >= 11.5.1; Node 22 ships npm 10.
+        run: npm install -g npm@^11.5.1
 
       - name: Install dependencies
         run: npm ci
@@ -55,9 +63,8 @@ jobs:
       - name: Build and publish
         if: steps.check.outputs.published == 'false'
         # prepublishOnly runs npm run build:lib (dist/ + type declarations).
+        # npm exchanges the GitHub OIDC token for a short-lived publish token.
         run: npm publish --provenance --access public
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_SECRET }}
 
       - name: Verify the version reached the registry
         if: steps.check.outputs.published == 'false'
@@ -66,12 +73,11 @@ jobs:
             echo "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }} is live on npm."
             exit 0
           fi
-          echo "::error::npm accepted the upload but the version is not public. It was staged for 2FA approval."
-          echo "A maintainer must approve it once:"
+          echo "::error::npm accepted the upload but the version is not public. It was staged for approval."
+          echo "Approve it once, or set the trusted publisher to allow 'npm publish':"
           echo "  npm login"
           echo "  npm stage list ${{ steps.pkg.outputs.name }}"
           echo "  npm stage approve <stage-id>"
-          echo "Or configure a Trusted Publisher (GitHub Actions) for this package on npmjs.com."
           exit 1
 
       - name: Report skip
