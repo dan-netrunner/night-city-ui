@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactNode } from "react";
+import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 
 type Tone = "neutral" | "accent" | "ok" | "warn" | "danger";
 
@@ -138,6 +138,167 @@ export function Alert({
           ×
         </button>
       )}
+    </div>
+  );
+}
+
+/* ---------- Divider ---------- */
+
+export type DividerProps = {
+  label?: ReactNode;
+  className?: string;
+};
+
+export function Divider({ label, className = "" }: DividerProps) {
+  return (
+    <div
+      className={`cp-divider${label ? " cp-divider--label" : ""} ${className}`}
+      role="separator"
+    >
+      {label && <span className="cp-divider__label">{label}</span>}
+    </div>
+  );
+}
+
+/* ---------- Kbd ---------- */
+
+export type KbdProps = HTMLAttributes<HTMLElement>;
+
+export function Kbd({ className = "", children, ...props }: KbdProps) {
+  return (
+    <kbd className={`cp-kbd ${className}`} {...props}>
+      {children}
+    </kbd>
+  );
+}
+
+/* ---------- Avatar ---------- */
+
+export type AvatarProps = {
+  name: string;
+  src?: string;
+  status?: "online" | "busy" | "offline";
+  size?: "sm" | "md" | "lg";
+  className?: string;
+};
+
+export function Avatar({
+  name,
+  src,
+  status,
+  size = "md",
+  className = "",
+}: AvatarProps) {
+  const initials = name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase())
+    .join("");
+
+  return (
+    <span
+      className={`cp-avatar cp-avatar--${size} ${className}`}
+      role="img"
+      aria-label={name}
+    >
+      {src ? <img src={src} alt="" /> : <span aria-hidden="true">{initials}</span>}
+      {status && (
+        <span
+          className={`cp-avatar__status cp-avatar__status--${status}`}
+          aria-hidden="true"
+        />
+      )}
+    </span>
+  );
+}
+
+/* ---------- Skeleton ---------- */
+
+export type SkeletonProps = {
+  width?: string | number;
+  height?: string | number;
+  className?: string;
+};
+
+export function Skeleton({ width, height, className = "" }: SkeletonProps) {
+  const style: CSSProperties = { width, height };
+  return <span className={`cp-skeleton ${className}`} style={style} aria-hidden="true" />;
+}
+
+/* ---------- Spinner ---------- */
+
+export type SpinnerProps = {
+  label?: string;
+  size?: "sm" | "md" | "lg";
+  className?: string;
+};
+
+export function Spinner({ label = "Loading", size = "md", className = "" }: SpinnerProps) {
+  return (
+    <span className={`cp-spinner-wrap ${className}`} role="status">
+      <span className={`cp-spinner cp-spinner--${size}`} aria-hidden="true" />
+      <span className="cp-spinner__label">{label}</span>
+    </span>
+  );
+}
+
+/* ---------- Metric ---------- */
+
+export type MetricProps = {
+  label: ReactNode;
+  value: ReactNode;
+  unit?: string;
+  delta?: ReactNode;
+  tone?: "accent" | "ok" | "warn" | "danger";
+  className?: string;
+};
+
+export function Metric({
+  label,
+  value,
+  unit,
+  delta,
+  tone = "accent",
+  className = "",
+}: MetricProps) {
+  return (
+    <div className={`cp-metric cp-metric--${tone} ${className}`}>
+      <span className="cp-metric__label">{label}</span>
+      <span className="cp-metric__value">
+        {value}
+        {unit && <small>{unit}</small>}
+      </span>
+      {delta && <span className="cp-metric__delta">{delta}</span>}
+    </div>
+  );
+}
+
+/* ---------- Empty state ---------- */
+
+export type EmptyStateProps = {
+  title: ReactNode;
+  children?: ReactNode;
+  glyph?: ReactNode;
+  action?: ReactNode;
+  className?: string;
+};
+
+export function EmptyState({
+  title,
+  children,
+  glyph = "//",
+  action,
+  className = "",
+}: EmptyStateProps) {
+  return (
+    <div className={`cp-empty ${className}`}>
+      <span className="cp-empty__glyph" aria-hidden="true">
+        {glyph}
+      </span>
+      <p className="cp-empty__title">{title}</p>
+      {children && <p className="cp-empty__body">{children}</p>}
+      {action}
     </div>
   );
 }

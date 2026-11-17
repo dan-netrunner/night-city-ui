@@ -22,7 +22,7 @@ export type ThemeMeta = {
 export const THEMES: ThemeMeta[] = [
   {
     id: "entropism",
-    name: "Entropism",
+    name: "Scrap//Tech",
     era: "2000s — 2050s",
     tagline: "Scavenged, repaired, kept alive.",
     description:
@@ -32,7 +32,7 @@ export const THEMES: ThemeMeta[] = [
   },
   {
     id: "kitsch",
-    name: "Kitsch",
+    name: "Tacky//Futurism",
     era: "2060s — 2070s",
     tagline: "Loud, sweet and impossible to ignore.",
     description:
@@ -42,7 +42,7 @@ export const THEMES: ThemeMeta[] = [
   },
   {
     id: "neomilitarism",
-    name: "Neo-Militarism",
+    name: "Corpo//Brutalism",
     era: "2070s",
     tagline: "Corporate security chic.",
     description:
@@ -52,11 +52,11 @@ export const THEMES: ThemeMeta[] = [
   },
   {
     id: "neokitsch",
-    name: "Neokitsch",
+    name: "Hyper//Opulence",
     era: "2077",
     tagline: "Wealth, worn as a statement.",
     description:
-      "Chrome, holograms and couture cyberware. Neokitsch is the language of the people who own Night City — polished, luminous and quietly expensive.",
+      "Chrome, holograms and couture cyberware. Hyper//Opulence is the language of the people who own Night City — polished, luminous and quietly expensive.",
     swatches: ["#7cc6ba", "#ff4f8b", "#eeb92a", "#121a2c"],
     traits: ["Glass and chrome", "Faceted corners", "Holographic gradients", "Sleek geometric type"],
   },

@@ -58,8 +58,8 @@ No necesitas cambiar el tema global: cualquier elemento HTML con el atributo `da
 
 ```tsx
 <section data-theme="kitsch">
-  <Panel title="Vista previa Kitsch">
-    <Button>Botón Kitsch</Button>
+  <Panel title="Vista previa Tacky//Futurism">
+    <Button>Botón Tacky//Futurism</Button>
   </Panel>
 </section>
 ```
@@ -79,8 +79,12 @@ Todos los componentes se exportan desde `src/components/index.ts`:
 - **`Alert`**: `tone` (`"info" | "ok" | "warn" | "danger"`), `title`, `onDismiss`.
 - **`Tabs`**: `items` (`{ id, label, count? }[]`), `value`, `onChange`, `label`.
 - **`Modal`**: `open`, `onClose`, `title`, `kicker`, `footer`.
-- **`Campos de formulario`**: `Input`, `Select`, `Checkbox`, `Toggle`, `Slider`.
+- **`Campos de formulario`**: `Input`, `Textarea`, `Select`, `Checkbox`, `Radio`, `Toggle`, `Slider`.
+- **`Navegación`**: `Tabs`, `Breadcrumbs` (`items: { label, href? }[]`), `Pagination` (`page`, `pageCount`, `onChange`), `Accordion` (`items: { id, title, meta?, children }[]`, `defaultOpen`).
+- **`Feedback`**: `Toast` y `ToastStack` (`items: ToastItem[]`, `onDismiss(id)`), `Tooltip` (`label`, `side`, envuelve un control focusable).
+- **`Datos y estados`**: `Metric` (`label`, `value`, `unit`, `delta`, `tone`), `Avatar` (`name`, `src`, `status`, `size`), `Spinner`, `Skeleton`, `EmptyState`, `Divider` (con `label`), `Kbd`.
 - **`CodeBlock`**: `code`, `label` (bloque de código con botón de copiado).
+- **`Table`**: solo CSS; usa `.cp-table-wrap` y `.cp-table` en tu `<table>`.
 
 > **Tip:** En la página **Components** de la app puedes probar estas props en tiempo real con el **Interactive Inspector** y copiar el JSX generado.
 

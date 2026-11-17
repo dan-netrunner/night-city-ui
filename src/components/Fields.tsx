@@ -6,6 +6,7 @@ import {
   type InputHTMLAttributes,
   type ReactNode,
   type SelectHTMLAttributes,
+  type TextareaHTMLAttributes,
 } from "react";
 
 type FieldExtras = {
@@ -45,6 +46,40 @@ export function Input({
       <input
         id={fieldId}
         className={`cp-input${error ? " cp-input--error" : ""}`}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error || hint ? `${fieldId}-msg` : undefined}
+        {...props}
+      />
+      {fieldMessage(fieldId, error, hint)}
+    </div>
+  );
+}
+
+export type TextareaProps = TextareaHTMLAttributes<HTMLTextAreaElement> &
+  FieldExtras;
+
+export function Textarea({
+  label,
+  hint,
+  error,
+  id,
+  className = "",
+  rows = 4,
+  ...props
+}: TextareaProps) {
+  const autoId = useId();
+  const fieldId = id ?? autoId;
+  return (
+    <div className={`cp-field ${className}`}>
+      {label && (
+        <label className="cp-field__label" htmlFor={fieldId}>
+          {label}
+        </label>
+      )}
+      <textarea
+        id={fieldId}
+        rows={rows}
+        className={`cp-input cp-textarea${error ? " cp-input--error" : ""}`}
         aria-invalid={error ? true : undefined}
         aria-describedby={error || hint ? `${fieldId}-msg` : undefined}
         {...props}
@@ -114,6 +149,37 @@ export function Checkbox({
       />
       <span className="cp-check__box" aria-hidden="true" />
       <span className="cp-check__text">
+        {label}
+        {hint && <small>{hint}</small>}
+      </span>
+    </label>
+  );
+}
+
+export type RadioProps = Omit<InputHTMLAttributes<HTMLInputElement>, "type"> & {
+  label: ReactNode;
+  hint?: ReactNode;
+};
+
+export function Radio({
+  label,
+  hint,
+  id,
+  className = "",
+  ...props
+}: RadioProps) {
+  const autoId = useId();
+  const fieldId = id ?? autoId;
+  return (
+    <label className={`cp-radio ${className}`} htmlFor={fieldId}>
+      <input
+        type="radio"
+        id={fieldId}
+        className="cp-radio__input"
+        {...props}
+      />
+      <span className="cp-radio__dot" aria-hidden="true" />
+      <span className="cp-radio__text">
         {label}
         {hint && <small>{hint}</small>}
       </span>

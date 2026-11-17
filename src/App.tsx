@@ -111,7 +111,7 @@ function Shell() {
       <footer className="footer">
         <div className="container footer__inner">
           <span>
-            NIGHT CITY UI // LOCAL FAN PROJECT. NOT AFFILIATED WITH CD PROJEKT RED.
+            NIGHT CITY UI // NOT AFFILIATED WITH CD PROJEKT RED.
           </span>
           <span>
             ACTIVE SKIN: <b>{meta.name.toUpperCase()}</b>

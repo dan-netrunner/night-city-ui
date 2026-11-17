@@ -1,17 +1,32 @@
 import { useState } from "react";
 import {
+  Accordion,
   Alert,
+  Avatar,
   Badge,
+  Breadcrumbs,
   Button,
   Checkbox,
+  Divider,
+  EmptyState,
   Input,
+  Kbd,
+  Metric,
   Modal,
+  Pagination,
   Panel,
   Progress,
+  Radio,
   Select,
+  Skeleton,
   Slider,
+  Spinner,
   Tabs,
+  Textarea,
+  ToastStack,
   Toggle,
+  Tooltip,
+  type ToastItem,
 } from "../components";
 import { ROLES, TIER_TONE, WEAPONS } from "../data";
 import { ComponentWorkbench } from "../components/ComponentWorkbench";
@@ -24,6 +39,20 @@ export function ComponentsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [alertVisible, setAlertVisible] = useState(true);
   const [saved, setSaved] = useState(false);
+  const [page, setPage] = useState(2);
+  const [toasts, setToasts] = useState<ToastItem[]>([]);
+
+  function pushToast() {
+    setToasts((current) => [
+      ...current.slice(-2),
+      {
+        id: String(Date.now()),
+        title: "Uplink established",
+        message: "Netrunner access granted for 00:12:44.",
+        tone: "ok",
+      },
+    ]);
+  }
 
   return (
     <div className="page">
@@ -33,7 +62,7 @@ export function ComponentsPage() {
         lead="Interactive specimens, not screenshots. Test props live, copy JSX snippets, or change the theme in the header."
       >
         <Badge tone="accent" solid pulse>
-          14 components
+          28 components
         </Badge>
       </PageHead>
 
@@ -225,6 +254,177 @@ export function ComponentsPage() {
         </Panel>
 
         <Panel
+          className="span-6"
+          kicker="// 10 form"
+          title="Long text & radios"
+          telemetry="FIELD.10"
+        >
+          <div className="demo-stack">
+            <Textarea
+              label="Job brief"
+              placeholder="Meet the fixer at the Afterlife, booth 04..."
+              hint="Encrypted on submit. 400 characters max."
+            />
+            <div className="demo-stack">
+              <span className="cp-field__label">Extraction route</span>
+              <Radio
+                name="route"
+                label="Rooftop — stealth"
+                hint="Low profile, slow descent."
+                defaultChecked
+              />
+              <Radio name="route" label="Freight elevator" />
+              <Radio name="route" label="Front door" hint="Not recommended." />
+            </div>
+          </div>
+        </Panel>
+
+        <Panel
+          className="span-6"
+          kicker="// 11 navigation"
+          title="Breadcrumbs & pagination"
+          telemetry="NAV.11"
+        >
+          <div className="demo-stack">
+            <Breadcrumbs
+              items={[
+                { label: "Home", href: "#/home" },
+                { label: "Components", href: "#/components" },
+                { label: "Navigation" },
+              ]}
+            />
+            <Divider />
+            <Pagination page={page} pageCount={6} onChange={setPage} />
+            <p className="muted small">
+              Page {page} of 6. Both controls are plain lists and buttons, so
+              screen readers announce them without extra ARIA.
+            </p>
+          </div>
+        </Panel>
+
+        <Panel
+          className="span-4"
+          kicker="// 12 telemetry"
+          title="Metrics & identity"
+          telemetry="HUD.12"
+        >
+          <div className="demo-grid">
+            <Metric label="Street cred" value="72" delta="+4 this week" />
+            <Metric
+              label="Trace risk"
+              value="23"
+              unit="%"
+              tone="danger"
+              delta="ICE nearby"
+            />
+          </div>
+          <Divider label="Operators" />
+          <div className="demo-row">
+            <Avatar name="V Silverhand" status="online" size="lg" />
+            <Avatar name="Judy Alvarez" status="busy" />
+            <Avatar name="Rogue Amendiares" status="offline" size="sm" />
+            <Avatar name="Panam Palmer" />
+          </div>
+          <Divider label="Shortcuts" />
+          <div className="demo-row">
+            <Kbd>⌘</Kbd>
+            <span className="mono-faint">+</span>
+            <Kbd>K</Kbd>
+            <span className="muted small">Open console</span>
+          </div>
+        </Panel>
+
+        <Panel
+          className="span-4"
+          kicker="// 13 feedback"
+          title="Tooltip & toasts"
+          telemetry="POP.13"
+        >
+          <div className="demo-stack">
+            <p className="muted small">
+              Tooltips open on hover or keyboard focus. Toasts live in a fixed
+              region and announce themselves.
+            </p>
+            <div className="demo-row">
+              <Tooltip label="Opens the netrunner console">
+                <Button variant="outline">Console</Button>
+              </Tooltip>
+              <Tooltip label="Wipes the local shard" side="bottom">
+                <Button variant="danger">Purge</Button>
+              </Tooltip>
+            </div>
+            <Button block onClick={pushToast}>
+              Push notification
+            </Button>
+          </div>
+        </Panel>
+
+        <Panel
+          className="span-4"
+          kicker="// 14 disclosure"
+          title="Accordion"
+          telemetry="DET.14"
+        >
+          <Accordion
+            defaultOpen="crew"
+            items={[
+              {
+                id: "crew",
+                title: "Crew roster",
+                meta: "3 linked",
+                children:
+                  "Three operators on the channel: a solo, a netrunner and a techie. Native <details> does the toggling.",
+              },
+              {
+                id: "gear",
+                title: "Loadout",
+                meta: "6 items",
+                children:
+                  "Malorian 3516, Kiroshi Mk.3, Sandevistan, MaxDocs and two EMP grenades.",
+              },
+              {
+                id: "comms",
+                title: "Comms protocol",
+                meta: "encrypted",
+                children:
+                  "Use the relay, never the public grid. Rotate the key after every job.",
+              },
+            ]}
+          />
+        </Panel>
+
+        <Panel
+          className="span-12"
+          kicker="// 15 states"
+          title="Loading, skeletons & empty states"
+          telemetry="STATE.15"
+        >
+          <div className="docs-grid">
+            <div className="demo-stack">
+              <Skeleton width="55%" height={14} />
+              <Skeleton height={12} />
+              <Skeleton height={84} />
+              <div className="demo-row">
+                <Spinner label="Loading" />
+                <Spinner size="sm" label="Syncing" />
+                <Spinner size="lg" label="Jacking in" />
+              </div>
+            </div>
+            <EmptyState
+              title="No contracts on the shard"
+              action={
+                <Button variant="outline" size="sm">
+                  Refresh feed
+                </Button>
+              }
+            >
+              Adjust the district filters or wait for a fixer to ping your
+              agent.
+            </EmptyState>
+          </div>
+        </Panel>
+
+        <Panel
           className="span-12"
           kicker="// 09 data grid"
           title="Table"
@@ -296,6 +496,13 @@ export function ComponentsPage() {
           />
         </div>
       </Modal>
+
+      <ToastStack
+        items={toasts}
+        onDismiss={(id) =>
+          setToasts((current) => current.filter((item) => item.id !== id))
+        }
+      />
     </div>
   );
 }

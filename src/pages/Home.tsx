@@ -123,15 +123,30 @@ const CATALOG = [
   "Button",
   "Panel",
   "Input",
+  "Textarea",
   "Select",
   "Checkbox",
+  "Radio",
   "Toggle",
   "Slider",
   "Tabs",
   "Badge",
   "Progress",
   "Alert",
+  "Toast",
+  "Tooltip",
   "Modal",
+  "Accordion",
+  "Breadcrumbs",
+  "Pagination",
+  "Divider",
+  "Kbd",
+  "Avatar",
+  "Metric",
+  "Skeleton",
+  "Spinner",
+  "EmptyState",
+  "CodeBlock",
   "Table",
 ];
 
@@ -148,9 +163,9 @@ export function Home() {
           </h1>
           <p className="lead">
             A React component kit that wears the four design languages of Night
-            City — scavenged Entropism, candy-bright Kitsch, corporate
-            Neo-Militarism and chrome-plated Neokitsch. Same components, four
-            skins, switched live from the top bar.
+            City — scavenged Scrap//Tech, candy-bright Tacky//Futurism,
+            corporate Corpo//Brutalism and chrome-plated Hyper//Opulence. Same
+            components, four skins, switched live from the top bar.
           </p>
           <div className="hero__actions">
             <a className="cp-btn cp-btn--primary cp-btn--lg" href="#/components">
@@ -167,7 +182,7 @@ export function Home() {
             </div>
             <div>
               <dt>Components</dt>
-              <dd>13</dd>
+              <dd>28</dd>
             </div>
             <div>
               <dt>Runtime deps</dt>
