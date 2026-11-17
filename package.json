@@ -1,6 +1,6 @@
 {
   "name": "night-city-ui",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Cyberpunk React component kit with four switchable themes, semantic markup and zero UI dependencies.",
   "license": "MIT",
   "type": "module",
