@@ -1,0 +1,54 @@
+name: Bug report
+description: Something renders, behaves or announces wrong
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: Say what you expected and what the kit did instead.
+      placeholder: The Progress bar keeps aria-valuenow above max.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: >-
+        A link to a repo or a StackBlitz, or the smallest JSX snippet that shows
+        it. A code block is fine if it stands on its own.
+      render: tsx
+      placeholder: |
+        import "night-city-ui/style.css";
+        import { Progress, ThemeProvider } from "night-city-ui";
+    validations:
+      required: true
+  - type: dropdown
+    id: skin
+    attributes:
+      label: Which skins show it
+      multiple: true
+      options:
+        - Scrap//Tech (entropism)
+        - Tacky//Futurism (kitsch)
+        - Corpo//Brutalism (neomilitarism)
+        - Hyper//Opulence (neokitsch)
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: night-city-ui, React, browser.
+      placeholder: night-city-ui 0.1.2, React 19.3, Chrome 141
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I searched existing issues and discussions
+          required: true
+        - label: I reproduced it with `prefers-reduced-motion` off, so it is not just an animation being skipped
+          required: false
