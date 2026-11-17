@@ -43,10 +43,12 @@ npm run preview    # serve the production build
 
 Fork it, branch off `main`, open a pull request. Layout, conventions and the review checklist are in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
-## License
-
-[MIT](./LICENSE).
+## Credits
 
 Night City UI React Component, Inspired by the work called "Cyberpunk 2077—User Interface" by Vladimír Vilimovský.
 
 Independent fan project. Not affiliated with or endorsed by CD Projekt Red or Vladimír Vilimovský; no game assets, logos or fonts are included. Cyberpunk 2077 is a trademark of CD Projekt Red.
+
+## License
+
+[MIT](./LICENSE).
