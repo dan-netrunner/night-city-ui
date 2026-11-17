@@ -54,7 +54,8 @@ jobs:
       - name: Check whether the version is already published
         id: check
         run: |
-          if npm view "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }}" version >/dev/null 2>&1; then
+          # curl, not `npm view`: npm caches the 404 for the version about to be published.
+          if curl -fs -o /dev/null "https://registry.npmjs.org/${{ steps.pkg.outputs.name }}/${{ steps.pkg.outputs.version }}"; then
             echo "published=true" >> "$GITHUB_OUTPUT"
           else
             echo "published=false" >> "$GITHUB_OUTPUT"
@@ -69,10 +70,15 @@ jobs:
       - name: Verify the version reached the registry
         if: steps.check.outputs.published == 'false'
         run: |
-          if npm view "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }}" version >/dev/null 2>&1; then
-            echo "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }} is live on npm."
-            exit 0
-          fi
+          url="https://registry.npmjs.org/${{ steps.pkg.outputs.name }}/${{ steps.pkg.outputs.version }}"
+          # Registry reads can lag a few seconds behind the upload.
+          for attempt in $(seq 1 10); do
+            if curl -fs -o /dev/null "$url"; then
+              echo "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }} is live on npm."
+              exit 0
+            fi
+            sleep 6
+          done
           echo "::error::npm accepted the upload but the version is not public. It was staged for approval."
           echo "Approve it once, or set the trusted publisher to allow 'npm publish':"
           echo "  npm login"
