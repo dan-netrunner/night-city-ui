@@ -1,0 +1,68 @@
+name: GitHub Release
+
+# Opens the release that belongs to a version tag pushed by `npm version`, and
+# attaches the exact tarball that npm got.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      id-token: write # signing the artifact attestation
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 1
+
+      - name: Setup Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build the package
+        run: npm run build:lib
+
+      - name: Pack
+        run: npm pack
+
+      - name: Sign the artifact
+        # Signed-Releases credit binds the asset to this run. Best-effort on
+        # purpose: a gh/sigstore flag change must not block a release.
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tarball="$(ls night-city-ui-*.tgz)"
+          gh attestation sign "$tarball" --bundle "${tarball}.sigstore.json"
+
+      - name: Create the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          notes="npm install night-city-ui@${version}
+          
+          Published from this tag by the Publish to npm workflow with npm provenance.
+          Docs: https://dan-netrunner.github.io/night-city-ui/"
+          args=(night-city-ui-*.tgz)
+          if ls *.sigstore.json >/dev/null 2>&1; then args+=(*.sigstore.json); fi
+          gh release create "$GITHUB_REF_NAME" --verify-tag \
+            --title "night-city-ui ${version}" \
+            --notes "$notes" \
+            "${args[@]}"
