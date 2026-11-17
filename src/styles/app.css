@@ -1095,6 +1095,14 @@ code {
   font-weight: 500;
 }
 
+/* ---------- Lazy route fallback ---------- */
+
+.route-fallback {
+  display: grid;
+  place-items: center;
+  min-height: 40vh;
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 1100px) {

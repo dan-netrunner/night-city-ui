@@ -44,6 +44,8 @@ npm run build       # tsc --noEmit + docs build — this is what CI runs
 npm run build:lib   # package build: ESM bundle + style.css + .d.ts
 ```
 
+Both write to `dist/`, the last one to run wins; `package.json` `files` allow-lists the library output only, so docs chunks can never ride along, and `prepublishOnly` rebuilds the package before any publish.
+
 Look at your change under all four skins using the theme switch in the header; a component that only works in the default one is not done.
 
 ## Commits and pull requests

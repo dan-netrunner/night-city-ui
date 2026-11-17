@@ -1,10 +1,22 @@
-import { useEffect, useState, type CSSProperties } from "react";
+import { Suspense, lazy, useEffect, useState, type CSSProperties } from "react";
 import { ThemeProvider, THEMES, useTheme } from "./theme";
+import { Spinner } from "./components";
 import { Home } from "./pages/Home";
-import { ComponentsPage } from "./pages/ComponentsPage";
-import { Playground } from "./pages/Playground";
-import { ThemesPage } from "./pages/ThemesPage";
-import { GuidePage } from "./pages/GuidePage";
+
+// Only the landing route ships in the entry chunk. The rest are separate
+// chunks that load when the hash actually asks for them.
+const ComponentsPage = lazy(() =>
+  import("./pages/ComponentsPage").then((m) => ({ default: m.ComponentsPage })),
+);
+const Playground = lazy(() =>
+  import("./pages/Playground").then((m) => ({ default: m.Playground })),
+);
+const ThemesPage = lazy(() =>
+  import("./pages/ThemesPage").then((m) => ({ default: m.ThemesPage })),
+);
+const GuidePage = lazy(() =>
+  import("./pages/GuidePage").then((m) => ({ default: m.GuidePage })),
+);
 
 const ROUTES = [
   { id: "home", label: "Overview" },
@@ -101,11 +113,19 @@ function Shell() {
       </header>
 
       <main id="main" className="container">
-        {route === "home" && <Home />}
-        {route === "components" && <ComponentsPage />}
-        {route === "playground" && <Playground />}
-        {route === "themes" && <ThemesPage />}
-        {route === "guide" && <GuidePage />}
+        <Suspense
+          fallback={
+            <div className="route-fallback" role="status">
+              <Spinner label="Loading route" />
+            </div>
+          }
+        >
+          {route === "home" && <Home />}
+          {route === "components" && <ComponentsPage />}
+          {route === "playground" && <Playground />}
+          {route === "themes" && <ThemesPage />}
+          {route === "guide" && <GuidePage />}
+        </Suspense>
       </main>
 
       <footer className="footer">

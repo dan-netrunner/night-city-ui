@@ -7,7 +7,9 @@ export default defineConfig({
   build: {
     outDir: "dist",
     emptyOutDir: true,
-    sourcemap: true,
+    // No .map in the tarball: it was 54 kB of the 33 kB package (gzip 13 kB)
+    // and only DevTools reads it. Re-enable when debugging a consumer report.
+    sourcemap: false,
     // Keep the woff2 files on disk instead of base64-inlining them into the CSS.
     assetsInlineLimit: 0,
     lib: {

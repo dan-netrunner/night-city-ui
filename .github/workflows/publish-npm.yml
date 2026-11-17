@@ -45,6 +45,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Audit the published surface
+        # Gate: whatever a consumer installs with this package must be clean.
+        # Today that is nothing (dependencies = {}), so this only becomes real
+        # if someone adds a runtime dependency.
+        # Dev-only advisories are deliberately NOT gated: picomatch <= 4.0.7
+        # (GHSA-fc5q-39xc-vjpf, reached through vite) has no upstream patch yet,
+        # and its globs are repo-authored, so it cannot block releases.
+        # Re-check with `npm audit` once picomatch ships a fix.
+        run: |
+          npm audit --omit=dev --audit-level=high
+          node -e "const d=require('./package.json').dependencies||{};console.log('runtime dependencies:', Object.keys(d).join(', ') || 'none')"
+
       - name: Read package name and version
         id: pkg
         run: |

@@ -8,7 +8,11 @@
     "access": "public"
   },
   "files": [
-    "dist"
+    "dist/night-city-ui.js",
+    "dist/style.css",
+    "dist/index.d.ts",
+    "dist/theme.d.ts",
+    "dist/components"
   ],
   "main": "./dist/night-city-ui.js",
   "module": "./dist/night-city-ui.js",
