@@ -39,8 +39,14 @@ npm run preview    # serve the production build
 - **Site:** merging to `main` builds and deploys to `gh-pages` → https://dan-netrunner.github.io/night-city-ui/
 - **npm:** merging to `main` publishes `package.json`'s version (skipped when that version already exists). Run `npm version patch|minor|major` before merging to release. Auth is OIDC trusted publishing — no token secret. One-time setup: on npmjs.com → package → Settings → Trusted Publisher, add GitHub Actions with repo `dan-netrunner/night-city-ui`, workflow `publish-npm.yml`, environment `npm`, and allow `npm publish`; then set Publishing access to "Require 2FA and disallow tokens". If the publish still gets staged, approve it with `npm stage list night-city-ui` and `npm stage approve <stage-id>`.
 
+## Contributing
+
+Fork it, branch off `main`, open a pull request. Layout, conventions and the review checklist are in [CONTRIBUTING.md](./CONTRIBUTING.md).
+
 ## License
 
 [MIT](./LICENSE).
 
-Independent fan project. Not affiliated with or endorsed by CD Projekt Red; no game assets, logos or fonts are included. Cyberpunk 2077 is a trademark of CD Projekt Red.
+Night City UI React Component, Inspired by the work called "Cyberpunk 2077—User Interface" by Vladimír Vilimovský.
+
+Independent fan project. Not affiliated with or endorsed by CD Projekt Red or Vladimír Vilimovský; no game assets, logos or fonts are included. Cyberpunk 2077 is a trademark of CD Projekt Red.

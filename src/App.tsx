@@ -114,6 +114,9 @@ function Shell() {
             NIGHT CITY UI // NOT AFFILIATED WITH CD PROJEKT RED.
           </span>
           <span>
+            INSPIRED BY &ldquo;CYBERPUNK 2077&mdash;USER INTERFACE&rdquo; BY VLADIMÍR VILIMOVSKÝ.
+          </span>
+          <span>
             ACTIVE SKIN: <b>{meta.name.toUpperCase()}</b>
           </span>
         </div>
