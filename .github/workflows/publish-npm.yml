@@ -83,13 +83,13 @@ jobs:
         if: steps.check.outputs.published == 'false'
         run: |
           url="https://registry.npmjs.org/${{ steps.pkg.outputs.name }}/${{ steps.pkg.outputs.version }}"
-          # Registry reads can lag a few seconds behind the upload.
-          for attempt in $(seq 1 10); do
+          # The registry read path lags the upload by up to a couple of minutes.
+          for attempt in $(seq 1 20); do
             if curl -fs -o /dev/null "$url"; then
               echo "${{ steps.pkg.outputs.name }}@${{ steps.pkg.outputs.version }} is live on npm."
               exit 0
             fi
-            sleep 6
+            sleep 15
           done
           echo "::error::npm accepted the upload but the version is not public. It was staged for approval."
           echo "Approve it once, or set the trusted publisher to allow 'npm publish':"
