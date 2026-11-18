@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.3] - 2026-11-18
 
 ### Changed
 - Workflow tokens are read-only by default; only the job that pushes `gh-pages`
@@ -22,16 +22,16 @@ All notable changes to this project are documented here. The format follows
 
 ### Added
 - English API reference for the whole public surface (`docs/COMPONENTS.md`): props tables for all 28 components, the theming API and the `tokens.css` design tokens, covering the OpenSSF `documentation_interface` criterion; linked from the README and the docs site.
-- Vitest suite for the component kit and `ThemeProvider` (33 tests).
+- Security model and release verification guides (`docs/SECURITY_MODEL.md`, `docs/VERIFYING_A_RELEASE.md`): actors and actions, attack surface with the source evidence behind each claim, and how to check the registry signature, integrity hash and provenance attestation of an installed version.
+- Vitest suite for the component kit and `ThemeProvider` (34 tests), including a property-based test for `Progress` (fast-check) that guards the clamp, the fill and the ARIA values for arbitrary inputs.
 - CI on pull requests: test, audit, docs build, package build and a payload check.
 - CodeQL scanning for the source and the workflow files.
 - OpenSSF Scorecard run that publishes its results, so supply-chain dashboards have data.
-- GitHub Release created from each version tag, with the npm tarball attached.
+- GitHub Release created from each version tag, with the npm tarball and a CycloneDX SBOM attached.
 - `SECURITY.md`, `CODEOWNERS`, issue and pull request templates, code of conduct.
 - GitHub Actions pinned to commit SHAs instead of moving tags.
-- Property-based test for `Progress` (fast-check), guarding the clamp, the fill and the aria values for arbitrary inputs; also what Scorecard's Fuzzing check looks for.
 - Documented policies in `SECURITY.md` (secrets and credentials, dependency and licence thresholds, SAST findings) and in `CONTRIBUTING.md` (testing environment and permission escalation) — all describing controls that already run, for the OpenSSF OSPS baseline.
-- `npm run audit:deps` gates every locked dependency, development included, against OSV.dev, and CI runs it with `--self-test` so a dead detector or a blocked network cannot report a pass. The `picomatch` exception is gone: GitHub withdrew GHSA-fc5q-39xc-vjpf, so `osv-scanner.toml` records no exceptions and the whole tree audits clean.
+- `npm run audit:deps` gates every locked dependency, development included, against OSV.dev, and CI runs it with `--self-test` so a dead detector or a blocked network cannot report a pass.
 
 ### Fixed
 - Solid badges now take their label colour from the tone's ink token, so `cp-badge--solid` passes AA contrast on every skin (was 1.74:1 on the default accent).
@@ -39,7 +39,10 @@ All notable changes to this project are documented here. The format follows
 - The docs site declares an SVG favicon, so browsers stop requesting a missing `/favicon.ico` and logging a console error.
 
 ### Security
-- `osv-scanner.toml` records why GHSA-fc5q-39xc-vjpf (dev-only `picomatch`, no patched release, zero runtime dependencies) is not reachable, so the Scorecard vulnerability finding stops reporting it.
+- GitHub withdrew GHSA-fc5q-39xc-vjpf (the dev-only `picomatch` ReDoS reached through
+  `vite`), so the exception recorded in `osv-scanner.toml` was removed: the file now
+  lists no exceptions and both `npm audit` and `npm run audit:deps` report the whole
+  dependency tree clean.
 
 ## [0.1.2] - 2026-11-17
 
@@ -68,7 +71,8 @@ All notable changes to this project are documented here. The format follows
 - Docs site with component workbench, playground, theme comparison and colour lab, deployed to GitHub Pages.
 - README badges for license, CI status, npm version, React and TypeScript support.
 
-[unreleased]: https://github.com/dan-netrunner/night-city-ui/compare/v0.1.2...HEAD
-[0.1.2]: https://github.com/dan-netrunner/night-city-ui/releases/tag/v0.1.2
-[0.1.1]: https://github.com/dan-netrunner/night-city-ui/releases/tag/v0.1.1
-[0.1.0]: https://github.com/dan-netrunner/night-city-ui/releases/tag/v0.1.0
+[unreleased]: https://github.com/dan-netrunner/night-city-ui/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/dan-netrunner/night-city-ui/releases/tag/v0.1.3
+[0.1.2]: https://github.com/dan-netrunner/night-city-ui/tree/v0.1.2
+[0.1.1]: https://github.com/dan-netrunner/night-city-ui/tree/v0.1.1
+[0.1.0]: https://github.com/dan-netrunner/night-city-ui/tree/df2696c34005d2a783f5820a230fe7f7a78561f6
