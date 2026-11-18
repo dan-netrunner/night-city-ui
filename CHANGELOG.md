@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+- Test coverage gate. `npm run test:coverage` instruments the shipped surface
+  (`src/components/*.tsx` and `src/theme.tsx`; the docs-site pages and the demo workbench are
+  excluded because they are not part of the package) and CI enforces 90% statements, 80%
+  branches, 85% functions and 90% lines, posting the measured numbers to the run summary.
+  Current suite: 92.99% statements (146/157), 84.03% branches, 91.8% functions, 96.4% lines.
+
 ### Fixed
 - The header no longer reflows when the active theme changes: the theme switcher keeps
   its position at every width, showing the theme labels only where the row has room for

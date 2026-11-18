@@ -39,8 +39,31 @@ jobs:
         # osv-scanner.toml. --self-test proves the detector is still working.
         run: npm run audit:deps -- --self-test
 
-      - name: Test
-        run: npm test
+      - name: Test with coverage
+        # Enforces the thresholds in vitest.config.ts (>=90% statements on the
+        # shipped surface). pipefail matters: without it, `tee` would mask a
+        # failing threshold and the check would pass while coverage is broken.
+        shell: bash
+        run: |
+          set -o pipefail
+          npm run test:coverage 2>&1 | tee coverage.log
+
+      - name: Publish the coverage summary
+        if: always()
+        shell: bash
+        run: |
+          # Actions exports FORCE_COLOR=1, so coverage.log carries ANSI escapes and
+          # "^Statements" matches nothing until they are stripped. Verified locally:
+          # with FORCE_COLOR=1 the raw grep finds 0 lines, the stripped one finds 4.
+          sed -r 's/\x1B\[[0-9;]*[A-Za-z]//g' coverage.log > coverage.txt || true
+          {
+            echo "## Test coverage (shipped surface)"
+            echo
+            echo '```text'
+            grep -E "^(Statements|Branches|Functions|Lines)[[:space:]]" coverage.txt ||
+              echo "no coverage table found in the log"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build docs site
         run: npm run build

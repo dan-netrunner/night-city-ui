@@ -32,6 +32,7 @@ React ≥18. No font files are bundled — the CSS falls back to system fonts. F
 npm install
 npm run dev        # docs site with hot reload
 npm test           # vitest suite for the kit and the theme provider
+npm run test:coverage  # same suite + the coverage thresholds CI enforces
 npm run build      # type-check + build the docs site
 npm run build:lib  # build the npm package into dist/
 npm run preview    # serve the production build
