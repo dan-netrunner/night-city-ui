@@ -1,0 +1,7 @@
+# Scorecard's OSV scan reports GHSA-fc5q-39xc-vjpf through picomatch, reached
+# here only via vite/vitest glob matching. picomatch 4.0.7 is the latest
+# release, no patched version is published, and the package that ships to
+# consumers has zero runtime dependencies. Drop this entry once a fix ships.
+[[IgnoredVulns]]
+id = "GHSA-fc5q-39xc-vjpf"
+reason = "Dev-only dependency of vite/vitest; no patched picomatch release exists and the published package has no runtime dependencies."
