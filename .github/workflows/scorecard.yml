@@ -31,6 +31,12 @@ jobs:
           results_file: results.sarif
           results_format: sarif
           publish_results: true
+          # Without a token that may read branch protection the check reports
+          # "internal error" instead of a score. Create a fine-grained PAT with
+          # no permissions except "Administration: read", store it as the
+          # SCORECARD_REPO_TOKEN secret, and it is used here; until then the
+          # default workflow token is used and Branch-Protection stays unscored.
+          repo_token: ${{ secrets.SCORECARD_REPO_TOKEN || github.token }}
 
       - name: Upload the SARIF report
         uses: github/codeql-action/upload-sarif@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
