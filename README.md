@@ -43,7 +43,7 @@ Fork it, branch off `main`, open a pull request. Layout, conventions and the rev
 
 ## Security
 
-Report vulnerabilities privately — see [SECURITY.md](./SECURITY.md). Supply-chain posture: zero runtime dependencies, lockfile committed, dependency install scripts allow-listed, releases published from GitHub Actions with npm provenance and OIDC trusted publishing.
+Report vulnerabilities privately — see [SECURITY.md](./SECURITY.md). Supply-chain posture: zero runtime dependencies, lockfile committed, dependency install scripts allow-listed, releases published from GitHub Actions with npm provenance and OIDC trusted publishing. Verify what you install — registry signature, integrity hash, provenance attestation: [docs/VERIFYING_A_RELEASE.md](./docs/VERIFYING_A_RELEASE.md). What the kit touches and what it does not: [docs/SECURITY_MODEL.md](./docs/SECURITY_MODEL.md).
 
 ## Releasing
 
