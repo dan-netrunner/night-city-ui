@@ -56,7 +56,7 @@ Report vulnerabilities privately — see [SECURITY.md](./SECURITY.md). Supply-ch
 
 ## Credits
 
-Night City UI React Component, Inspired by the work called "Cyberpunk 2077—User Interface" by Vladimír Vilimovský.
+Night City UI React Component, inspired by the work "Cyberpunk 2077—User Interface" by [Vladimír Vilimovský](https://www.behance.net/vladimirvilimovsky) — his Behance holds the original designs this kit is a fan translation of.
 
 Independent fan project. Not affiliated with or endorsed by CD Projekt Red or Vladimír Vilimovský; no game assets, logos or fonts are included. Cyberpunk 2077 is a trademark of CD Projekt Red.
 

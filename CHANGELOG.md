@@ -7,6 +7,14 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The design credit is now a link. The docs-site footer already named
+  [Vladimír Vilimovský](https://www.behance.net/vladimirvilimovsky) as the author of
+  "Cyberpunk 2077—User Interface"; his name now points at his Behance, in the footer and in the
+  README's Credits, so anyone can see the work this kit is a fan translation of. No new styles:
+  `a { color: var(--accent) }` and the shared `:focus-visible` ring in `tokens.css` already theme
+  and outline footer links in all four skins, so it reads and behaves like the existing
+  "Report an issue" link beside it.
+
 - Contributor sign-off. `DCO.txt` carries the Developer Certificate of Origin 1.1 verbatim,
   `scripts/check-dco.mjs` enforces a matching `Signed-off-by:` trailer on every commit a pull request
   adds, and `.github/workflows/dco.yml` runs it as a new required status check (`dco`) alongside
