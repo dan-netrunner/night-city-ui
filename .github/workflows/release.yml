@@ -62,16 +62,6 @@ jobs:
       - name: Pack
         run: npm pack
 
-      - name: Sign the artifact
-        # Signed-Releases credit binds the asset to this run. Best-effort on
-        # purpose: a gh/sigstore flag change must not block a release.
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          tarball="$(ls night-city-ui-*.tgz)"
-          gh attestation sign "$tarball" --bundle "${tarball}.sigstore.json"
-
       - name: Create the release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -83,10 +73,20 @@ jobs:
           Built from this tag by the GitHub Release workflow; the same version on
           npm carries an npm provenance attestation from OIDC trusted publishing.
           Docs: https://dan-netrunner.github.io/night-city-ui/"
-          assets=(night-city-ui-*.tgz)
-          if ls *.sigstore.json >/dev/null 2>&1; then assets+=(*.sigstore.json); fi
           gh release create "$TAG" \
             --target "$(git rev-parse HEAD)" \
             --title "night-city-ui ${version}" \
             --notes "$notes" \
-            "${assets[@]}"
+            night-city-ui-*.tgz
+
+      - name: Attest the artifact
+        # Provenance for the uploaded tarball: this is what the OpenSSF
+        # Signed-Releases check counts, and it is the reason the release exists
+        # as a GitHub Release and not only on npm. gh has no `attestation sign`
+        # subcommand, so the official action does it. Best-effort on purpose: a
+        # signing problem must not leave a version unreleased.
+        continue-on-error: true
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: night-city-ui-*.tgz
+          bundle-path: attestation.json

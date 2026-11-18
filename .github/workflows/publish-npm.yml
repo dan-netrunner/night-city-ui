@@ -34,15 +34,21 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: "22"
+          # Node 24 bundles npm 11.19, and OIDC trusted publishing needs npm
+          # >= 11.5.1. Installing npm inside the job would count as an unpinned
+          # dependency in the OpenSSF Pinned-Dependencies check.
+          node-version: "24"
           registry-url: "https://registry.npmjs.org"
           # no dependency cache in release builds
 
-      - name: Upgrade npm
-        # Trusted publishing needs npm >= 11.5.1 and Node 22 ships npm 10.
-        # Exact version on purpose: a range counts as unpinned in the OpenSSF
-        # Pinned-Dependencies check. Bump it together with a manual test run.
-        run: npm install -g npm@11.21.3
+      - name: Check the toolchain can publish
+        run: |
+          v="$(npm --version)"
+          echo "node $(node --version), npm $v"
+          if [ "${v%%.*}" -lt 11 ]; then
+            echo "::error::npm $v cannot do OIDC trusted publishing (needs >= 11.5.1)"
+            exit 1
+          fi
 
       - name: Install dependencies
         run: npm ci
