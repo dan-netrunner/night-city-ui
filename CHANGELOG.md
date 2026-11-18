@@ -7,6 +7,27 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The badge entry now answers the **silver-level** criteria too: 37 classic level-1 MUSTs plus
+  `two_person_review`, each with a justification that points at a file, a workflow or a
+  measurement. Projected against the site's own grading rules that moves the entry from 15% to 69%
+  at level 1 while level 0 and Baseline level 1 stay at 100%. Six are recorded `Unmet` because they
+  are not done — no named style guide, no automatic style enforcement, no regression test on one of
+  the two behaviour fixes, no input validation, no roadmap, no continuity plan — and each
+  justification says what would close it. Three of the `Met` answers point at the two pages added
+  in the same release, below.
+- The README now links the badges the project has earned: [OpenSSF Best Practices
+  `passing`](https://www.bestpractices.dev/projects/16895) and
+  [OpenSSF Baseline level 1](https://www.bestpractices.dev/projects/16895). The badge program asks
+  projects to publish achievements on the front page, and the criteria say within 48 hours of
+  recognition.
+- [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md): the layer order (tokens → styles → components
+  → theme → entry), how a skin switch is one attribute and no rebuild, the two builds from one
+  source tree, what the public surface is, and the measured rebuild check (two clean
+  `npm run build:lib` runs produced 16 files with identical sha256 per file).
+- A **Governance and roles** section in `CONTRIBUTING.md`: who holds authority, what a contributor
+  and a reporter are responsible for, how a decision is actually made, and what changes when a
+  second maintainer arrives. It documents the limits honestly — single owner, no second reviewer,
+  no continuity plan.
 - `.bestpractices.json` now answers the badge's classic (non-OSPS) criteria for the passing
   level too — 43 criteria with a justification each, `N/A` where cryptography is out of scope
   for a component kit and `Unmet` where it is simply not done (no dynamic analysis, no
