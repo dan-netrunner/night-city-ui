@@ -150,9 +150,11 @@ So "who" = *this workflow, on `main`, at that commit* — auditable via
 
 ## 5. The GitHub Release assets
 
-From `v0.1.3` on, each version tag produces a GitHub Release carrying four assets:
-the tarball, a CycloneDX SBOM, the Sigstore bundle and the in-toto statement
-extracted from it.
+From `v0.1.4` on, every version tag produces a GitHub Release carrying four assets
+in one run: the tarball, a CycloneDX SBOM, the Sigstore bundle and the in-toto
+statement extracted from it. `v0.1.3` has the same four, but its bundle and
+statement were attached by a follow-up run after the signing permission was fixed
+(see the caveat below), so `v0.1.4` is the reference example.
 
 ```sh
 gh release view v0.1.3 --repo dan-netrunner/night-city-ui \
@@ -189,13 +191,26 @@ The tarball is reproducible: rebuilding `npm run build:lib && npm pack` from the
 tag gives the same `sha256`, so a mismatch means the asset was replaced, not that
 the build drifted.
 
-One nuance about `v0.1.3`: its release was created by the tag push and the
-attestation was added by a later run of the same workflow, after the signing
-permission was fixed. GitHub therefore resolves the record **by artifact digest**
-(`GET /repos/…/attestations/sha256:…` answers, and `gh attestation verify` uses
-that), while the release entry itself has no attestation link
-(`GET /repos/…/releases/{id}/attestations` does not). The digest binding is what
-carries the guarantee; check both if you want the release page to show it too.
+One nuance worth knowing before you look for a link: GitHub addresses attestation
+storage by **artifact digest**, and that is the only way in. Both
+`GET /repos/…/releases/{id}/attestations` and
+`GET /repos/…/releases/assets/{id}/attestations` answer 404 here even for `v0.1.4`,
+whose release, attestation and proof assets all came from one tag-push run, while
+`GET /repos/…/attestations/sha256:…` answers 200 and is what
+`gh attestation verify` uses. So verify by digest, or read the `.sigstore.json`
+and `.intoto.jsonl` assets that travel with the release; do not expect the release
+page itself to be the source of truth.
+
+For `v0.1.4` the three digests line up, which is the check that matters:
+
+```
+asset night-city-ui-0.1.4.tgz   sha256:256f9837ae6a…d4acf56d
+npm   night-city-ui-0.1.4.tgz   sha256:256f9837ae6a…d4acf56d
+statement subject               sha256:256f9837ae6a…d4acf56d
+```
+
+The GitHub Release asset and the npm tarball are the same bytes, and the
+attestation is about those bytes.
 
 ### What this caught once, and how to spot it yourself
 
