@@ -106,6 +106,13 @@ function Shell() {
                 {item.label}
               </a>
             ))}
+            <a
+              href="https://github.com/dan-netrunner/night-city-ui"
+              target="_blank"
+              rel="noreferrer"
+            >
+              Source
+            </a>
           </nav>
 
           <ThemeSwitch />
@@ -139,6 +146,13 @@ function Shell() {
           <span>
             ACTIVE SKIN: <b>{meta.name.toUpperCase()}</b>
           </span>
+          <a
+            href="https://github.com/dan-netrunner/night-city-ui/issues"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Report an issue
+          </a>
         </div>
       </footer>
     </div>
