@@ -7,6 +7,14 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The badge entry now answers the **silver-level** criteria too: 37 classic level-1 MUSTs plus
+  `two_person_review`, each with a justification that points at a file, a workflow or a
+  measurement. Projected against the site's own grading rules that moves the entry from 15% to 69%
+  at level 1 while level 0 and Baseline level 1 stay at 100%. Six are recorded `Unmet` because they
+  are not done — no named style guide, no automatic style enforcement, no regression test on one of
+  the two behaviour fixes, no input validation, no roadmap, no continuity plan — and each
+  justification says what would close it. Three of the `Met` answers point at the two pages added
+  in the same release, below.
 - The README now links the badges the project has earned: [OpenSSF Best Practices
   `passing`](https://www.bestpractices.dev/projects/16895) and
   [OpenSSF Baseline level 1](https://www.bestpractices.dev/projects/16895). The badge program asks
