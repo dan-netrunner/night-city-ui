@@ -212,24 +212,43 @@ def verify(payload):
     except (urllib.error.URLError, ValueError) as error:
         sys.exit("no se pudo leer el JSON público: {}".format(error))
     live = {column_name(key): value for key, value in raw.items()}
-    wanted = {key: value for key, value in payload.items() if key.endswith("_status")}
+    # Statuses alone would not prove the write: a justification that failed to land
+    # leaves the criterion graded criterion_justification_required, which is not
+    # "enough", while the status still reads Met. Check both.
+    wanted = {key: value for key, value in payload.items()
+              if key.endswith(("_status", "_justification"))}
     missing, differ = [], []
     for key, want in sorted(wanted.items()):
         got = live.get(key)
         if got in (None, "", "?"):
-            missing.append((key[:-7], want))
-        elif got != want:
-            differ.append((key[:-7], got, want))
+            # A blank justification is omitted from the public JSON entirely
+            # (_project.json.jbuilder), so "absent" and "empty" are the same answer.
+            missing.append((key, want))
+        elif str(got).strip() != str(want).strip():
+            differ.append((key, got, want))
+    def tally(suffix):
+        total = len([key for key in wanted if key.endswith(suffix)])
+        return total, len([key for key, _ in missing if key.endswith(suffix)]), \
+            len([key for key, _, _ in differ if key.endswith(suffix)])
+
+    statuses, pending_st, other_st = tally("_status")
+    justs, pending_ju, other_ju = tally("_justification")
     print("\nverificado contra {}projects/{}.json".format(BASE_URL, PROJECT_ID))
-    print("  estados en el archivo: {} | aplicados: {} | pendientes: {} | distintos: {}"
-          .format(len(wanted), len(wanted) - len(missing) - len(differ), len(missing),
-                  len(differ)))
-    for key, want in missing[:30]:
-        print("  pendiente {:<32} -> {}".format(key, want))
-    if len(missing) > 30:
-        print("  … {} pendientes más".format(len(missing) - 30))
-    for key, got, want in differ[:30]:
-        print("  distinto  {:<32} sitio={} archivo={}".format(key, got, want))
+    print("  estados: {} en el archivo | aplicados {} | pendientes {} | distintos {}"
+          .format(statuses, statuses - pending_st - other_st, pending_st, other_st))
+    print("  justificaciones: {} en el archivo | pendientes {} | distintos {}"
+          .format(justs, pending_ju, other_ju))
+    for key, want in missing[:20]:
+        print("  pendiente {:<40} -> {}".format(key, str(want)[:40]))
+    for key, got, want in differ[:20]:
+        # Show the point of divergence: two long justifications that differ near the
+        # end look identical in a 40-character prefix, which is a useless diagnosis.
+        left, right = str(got), str(want)
+        start = next((i for i, pair in enumerate(zip(left, right)) if pair[0] != pair[1]),
+                     min(len(left), len(right)))  # one is a prefix of the other
+        print("  distinto  {:<40} sitio={!r} archivo={!r}"
+              .format(key, left[max(0, start - 10):start + 40],
+                      right[max(0, start - 10):start + 40]))
     print("  badge_level={} percentage_0={} percentage_baseline_1={}"
           .format(raw.get("badge_level"), raw.get("badge_percentage_0"),
                   raw.get("badge_percentage_baseline_1")))
