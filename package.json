@@ -12,7 +12,8 @@
     "dist/style.css",
     "dist/index.d.ts",
     "dist/theme.d.ts",
-    "dist/components"
+    "dist/components",
+    "CHANGELOG.md"
   ],
   "main": "./dist/night-city-ui.js",
   "module": "./dist/night-city-ui.js",

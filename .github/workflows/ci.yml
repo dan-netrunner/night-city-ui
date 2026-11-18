@@ -49,6 +49,7 @@ jobs:
           npm pack --dry-run 2>&1 | tee pack.log
           grep -q "dist/night-city-ui.js" pack.log
           grep -q "dist/style.css" pack.log
+          grep -q "CHANGELOG.md" pack.log
           if grep -q "dist/assets/" pack.log; then
             echo "::error::docs-site chunks would ship inside the package"
             exit 1

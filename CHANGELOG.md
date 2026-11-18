@@ -16,6 +16,9 @@ All notable changes to this project are documented here. The format follows
 - The release artifact is attested with `actions/attest-build-provenance`.
 - `scorecard.yml` reads branch protection rules when a `SCORECARD_REPO_TOKEN`
   secret is present.
+- The npm package now ships `CHANGELOG.md`, so an installed version carries its
+  own release log, and each GitHub Release attaches a CycloneDX SBOM of the
+  runtime dependency graph alongside the tarball.
 
 ### Added
 - English API reference for the whole public surface (`docs/COMPONENTS.md`): props tables for all 28 components, the theming API and the `tokens.css` design tokens, covering the OpenSSF `documentation_interface` criterion; linked from the README and the docs site.
