@@ -7,6 +7,12 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- `require_2FA` and `secure_2FA` answered, which were the last two blank criteria: the maintainer
+  account is protected by an authenticator application (TOTP, RFC 6238), not by SMS, which is the
+  distinction the criterion draws. Every gradeable criterion in the entry is now answered - 145
+  classic plus 64 OpenSSF Baseline controls, 193 statuses in `.bestpractices.json`, no blanks.
+  Level 2 moves from 39% to 48%.
+
 - The badge answers were audited criterion by criterion and the entry is now fully authored by
   this repository: 45 more statuses (level-2 criteria, plus `discussion`, `interfaces_current`,
   `accessibility_best_practices`, `code_review_standards`, the coverage criteria at 90/80 and the
