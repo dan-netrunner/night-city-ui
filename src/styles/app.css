@@ -1105,6 +1105,8 @@ code {
 
 /* ---------- Responsive ---------- */
 
+/* The labels need the full 1200px content width. Below it the row would rewrap
+   and the switch would jump under the brand for the wider display fonts. */
 @media (max-width: 1279px) {
   .theme-switch__name {
     display: none;
@@ -1159,6 +1161,8 @@ code {
   }
 }
 
+/* Below this the nav takes its own row, so the switch never gets pushed down
+   when the brand is the widest one. */
 @media (max-width: 960px) {
   .topbar__inner {
     gap: 0.6rem;

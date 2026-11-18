@@ -4,6 +4,13 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Fixed
+- The header no longer reflows when the active theme changes: the theme switcher keeps
+  its position at every width, showing the theme labels only where the row has room for
+  them (1280px and up).
+
 ## [0.1.4] - 2026-11-18
 
 ### Changed
