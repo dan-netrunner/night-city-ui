@@ -26,7 +26,8 @@ jobs:
     timeout-minutes: 15
     permissions:
       contents: write # create the release and upload its assets
-      id-token: write # signing the artifact attestation
+      id-token: write # OIDC identity for Sigstore signing
+      attestations: write # persisting the attestation record is its own scope
     steps:
       - name: Resolve the tag
         id: tag
@@ -47,13 +48,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Guard against a tag that is already released
+      - name: Check whether the release already exists
+        id: guard
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           if gh release view "${{ steps.tag.outputs.tag }}" >/dev/null 2>&1; then
-            echo "::error::release for ${{ steps.tag.outputs.tag }} already exists"
-            exit 1
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "release for ${{ steps.tag.outputs.tag }} already exists; only re-attesting its assets"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Build the package
@@ -90,6 +94,7 @@ jobs:
           ' "$sbom"
 
       - name: Create the release
+        if: steps.guard.outputs.exists != 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.tag.outputs.tag }}
@@ -108,14 +113,44 @@ jobs:
             --notes "$notes" \
             night-city-ui-*.tgz night-city-ui-*.cdx.json
 
+      - name: Take the published asset when the release already exists
+        # A re-run has to attest the bytes that are actually downloadable, not a
+        # fresh rebuild, or the attestation subject would not match the asset.
+        if: steps.guard.outputs.exists == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          before="$(sha256sum night-city-ui-*.tgz | cut -d' ' -f1)"
+          gh release download "$TAG" -p "night-city-ui-*.tgz" --clobber
+          after="$(sha256sum night-city-ui-*.tgz | cut -d' ' -f1)"
+          if [ "$before" != "$after" ]; then
+            echo "This build ($before) differs from the published asset ($after);"
+            echo "the attestation below will describe the published asset."
+          fi
+
       - name: Attest the artifact
         # Provenance for the uploaded tarball: this is what the OpenSSF
-        # Signed-Releases check counts, and it is the reason the release exists
-        # as a GitHub Release and not only on npm. gh has no `attestation sign`
-        # subcommand, so the official action does it. Best-effort on purpose: a
-        # signing problem must not leave a version unreleased.
-        continue-on-error: true
+        # Signed-Releases check counts. gh has no `attestation sign` subcommand,
+        # so the official action does it, and persisting the record needs the
+        # attestations permission scope on the job token.
+        # No continue-on-error here: an unsigned release is a failure worth
+        # seeing, because a silently missing attestation is what previously left
+        # the released asset unverifiable.
         uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        id: attest
         with:
           subject-path: night-city-ui-*.tgz
           bundle-path: attestation.json
+
+      - name: Confirm the attestation was stored
+        # v0.1.3 shipped unsigned because this step was best-effort: the action
+        # did fail (missing attestations permission) and the run still went green.
+        # Assert the attestation id so a missing record can never be invisible.
+        run: |
+          id="${{ steps.attest.outputs.attestation-id }}"
+          if [ -z "$id" ]; then
+            echo "::error::the attestation step produced no attestation id"
+            exit 1
+          fi
+          echo "stored attestation id $id"
