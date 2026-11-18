@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="neokitsch">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0c0f" />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <title>Night City UI — Cyberpunk component themes</title>
+    <meta
+      name="description"
+      content="A React component kit with four Cyberpunk 2077-inspired themes: Scrap//Tech, Tacky//Futurism, Corpo//Brutalism and Hyper//Opulence."
+    />
+    <script>
+      // Apply the saved theme before paint to avoid a flash of the wrong style.
+      try {
+        var t = localStorage.getItem("nc-theme");
+        if (["entropism", "kitsch", "neomilitarism", "neokitsch"].indexOf(t) !== -1) {
+          document.documentElement.dataset.theme = t;
+          document.querySelector('meta[name="theme-color"]').content =
+            { entropism: "#160d10", kitsch: "#190f14", neomilitarism: "#0c0c0b", neokitsch: "#0b0c0f" }[t];
+        }
+      } catch (e) {}
+    </script>
+    <script type="module" crossorigin src="./assets/index-Cry9YrXr.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BJKoHfFj.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
