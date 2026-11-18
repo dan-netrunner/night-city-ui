@@ -1,0 +1,43 @@
+name: Feature request
+description: A new component, a prop, or a theming hook
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What you need
+      description: The gap in the kit, described from the outside.
+      placeholder: There is no segmented control, so I rebuilt one per app.
+    validations:
+      required: true
+  - type: textarea
+    id: api
+    attributes:
+      label: Shape you imagine
+      description: >-
+        Props and behaviour. Keep it framework-plain: no dependency on a state library.
+      render: tsx
+      placeholder: |
+        <Segmented items={[{ id, label }]} value={id} onChange={fn} />
+    validations:
+      required: true
+  - type: textarea
+    id: skins
+    attributes:
+      label: How each skin should read it
+      description: The kit's deal is one contract, four looks. Say what changes between the four.
+    validations:
+      required: true
+  - type: checkboxes
+    id: limits
+    attributes:
+      label: Constraints accepted
+      options:
+        - label: No new runtime dependency beyond React
+          required: true
+        - label: Native element where one exists (`<button>`, `<details>`, `<dialog>`, `<input>`)
+          required: true
+        - label: Works keyboard-only and reports itself to assistive tech
+          required: true
+        - label: No game assets, fonts or trademarks involved
+          required: true
