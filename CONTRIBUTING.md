@@ -51,6 +51,14 @@ Both write to `dist/`, the last one to run wins; `package.json` `files` allow-li
 
 Look at your change under all four skins using the theme switch in the header; a component that only works in the default one is not done.
 
+## Testing
+
+The supported environment is Vitest with the `jsdom` environment, configured in [`vitest.config.ts`](./vitest.config.ts). CI runs the suite on Node 22 ([`ci.yml`](./.github/workflows/ci.yml)); the publish job runs it on Node 24 ([`publish-npm.yml`](./.github/workflows/publish-npm.yml)). You run it with `npm test`; CI runs it automatically on every pull request, and the publish workflow runs it again before every release.
+
+34 tests cover the kit today. [`src/components/kit.test.tsx`](./src/components/kit.test.tsx) renders the components and asserts their accessible roles, labels and ARIA wiring — buttons and fields, tabs keyboard behaviour, modal and toasts, the code-copy — and [`src/theme.test.tsx`](./src/theme.test.tsx) drives `ThemeProvider` through skin switching, the `theme-color` meta and `nc-theme` persistence, including a storage backend that throws. A property-based fast-check test ([`progress.property.test.tsx`](./src/components/progress.property.test.tsx)) pins the `Progress` clamp and aria values for arbitrary inputs.
+
+Policy: any behavioural change must add or update a test in the same pull request, and every new component needs at least one test asserting its accessible role or label. A red suite blocks the PR — the required `build` check (the CI job) runs `npm test` among its steps.
+
 ## Commits and pull requests
 
 - Conventional prefixes, matching the existing history: `feat:`, `fix:`, `docs:`, `ci:`, `chore:`.
@@ -63,6 +71,10 @@ Look at your change under all four skins using the theme switch in the header; a
 Maintainers only. `npm version patch|minor|major`, merge to `main`, and GitHub Actions publishes to npm with provenance through OIDC trusted publishing and deploys the docs site to `gh-pages`. Pushing the version tag also opens the matching GitHub Release with the tarball attached. Contributors never need npm credentials or tokens.
 
 Every user-visible change gets a line in [CHANGELOG.md](./CHANGELOG.md) under *Unreleased*; the release commit moves it under the version heading.
+
+## Permissions
+
+There is no path to write access except reviewed pull requests: [`CODEOWNERS`](./.github/CODEOWNERS) routes every file to the maintainer, and `main` requires two approving reviews, the required status checks (`build` and both CodeQL analyses) and an up-to-date branch. Repository access is never granted automatically; collaborator permissions are assigned manually, at the lowest level that still does the job. Release authority — npm, the GitHub environments, secrets — stays with the maintainer.
 
 ## License
 
