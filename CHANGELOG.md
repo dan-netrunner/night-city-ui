@@ -23,6 +23,11 @@ All notable changes to this project are documented here. The format follows
   verify`, what a passing statement must contain) and `docs/SECURITY_MODEL.md` no longer claims
   there is no SBOM: both were written while the release workflow was still untested against a
   real tag, and are now backed by the shipped `v0.1.3` assets.
+- The release now uploads its own proof next to the tarball: the Sigstore bundle as
+  `<tarball>.tgz.sigstore.json` and the in-toto statement inside it as
+  `<tarball>.tgz.intoto.jsonl`. OpenSSF's `Signed-Releases` probes read the asset names on
+  the release, not the record in GitHub's attestation storage, which is why `v0.1.3` scored
+  0 with a valid attestation and the pair moved it to 10.
 
 ## [0.1.3] - 2026-11-18
 
