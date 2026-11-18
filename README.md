@@ -11,7 +11,7 @@
 
 React + TypeScript component kit with four switchable skins: **Scrap//Tech**, **Tacky//Futurism**, **Corpo//Brutalism** and **Hyper//Opulence**. Semantic markup, CSS custom properties, no runtime dependencies beyond React.
 
-**Docs:** [Overview](https://dan-netrunner.github.io/night-city-ui/) · [Components](https://dan-netrunner.github.io/night-city-ui/#/components) · [Guide](https://dan-netrunner.github.io/night-city-ui/#/guide) · [Guía ES](./GUIA_DE_USO.md) · [npm](https://www.npmjs.com/package/night-city-ui)
+**Docs:** [Overview](https://dan-netrunner.github.io/night-city-ui/) · [Components](https://dan-netrunner.github.io/night-city-ui/#/components) · [Guide](https://dan-netrunner.github.io/night-city-ui/#/guide) · [API reference](./docs/COMPONENTS.md) · [Guía ES](./GUIA_DE_USO.md) · [npm](https://www.npmjs.com/package/night-city-ui)
 
 ## Install
 
@@ -39,7 +39,7 @@ npm run preview    # serve the production build
 
 ## Contributing
 
-Fork it, branch off `main`, open a pull request. Layout, conventions and the review checklist are in [CONTRIBUTING.md](./CONTRIBUTING.md); behaviour changes belong in [CHANGELOG.md](./CHANGELOG.md).
+Fork it, branch off `main`, open a pull request. Layout, conventions and the review checklist are in [CONTRIBUTING.md](./CONTRIBUTING.md); behaviour changes belong in [CHANGELOG.md](./CHANGELOG.md) and public API changes in [docs/COMPONENTS.md](./docs/COMPONENTS.md), the English reference for every exported component's props.
 
 ## Security
 

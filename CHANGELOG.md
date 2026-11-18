@@ -18,6 +18,7 @@ All notable changes to this project are documented here. The format follows
   secret is present.
 
 ### Added
+- English API reference for the whole public surface (`docs/COMPONENTS.md`): props tables for all 28 components, the theming API and the `tokens.css` design tokens, covering the OpenSSF `documentation_interface` criterion; linked from the README and the docs site.
 - Vitest suite for the component kit and `ThemeProvider` (33 tests).
 - CI on pull requests: test, audit, docs build, package build and a payload check.
 - CodeQL scanning for the source and the workflow files.

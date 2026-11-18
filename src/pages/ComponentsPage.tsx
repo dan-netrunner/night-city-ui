@@ -66,6 +66,18 @@ export function ComponentsPage() {
         </Badge>
       </PageHead>
 
+      <p className="muted small">
+        Full props tables for every component:{" "}
+        <a
+          href="https://github.com/dan-netrunner/night-city-ui/blob/main/docs/COMPONENTS.md"
+          target="_blank"
+          rel="noreferrer"
+        >
+          docs/COMPONENTS.md
+        </a>
+        .
+      </p>
+
       <ComponentWorkbench />
 
       <div className="comp-grid">
