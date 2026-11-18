@@ -1,10 +1,17 @@
 name: GitHub Release
 
-# Opens the release that belongs to a version tag pushed by `npm version`, and
-# attaches the exact tarball that npm got.
+# Opens the release that belongs to a version tag and attaches the exact
+# tarball npm received. Runs automatically when `npm version` pushes a tag, and
+# can be dispatched afterwards to backfill a tag that predates this workflow.
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing tag to publish, e.g. v0.1.2"
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -18,12 +25,17 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
-      contents: write
+      contents: write # create the release and upload its assets
       id-token: write # signing the artifact attestation
     steps:
+      - name: Resolve the tag
+        id: tag
+        run: echo "tag=${{ inputs.tag || github.ref_name }}" >> "$GITHUB_OUTPUT"
+
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          ref: ${{ steps.tag.outputs.tag }}
           fetch-depth: 1
 
       - name: Setup Node
@@ -34,6 +46,15 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Guard against a tag that is already released
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "${{ steps.tag.outputs.tag }}" >/dev/null 2>&1; then
+            echo "::error::release for ${{ steps.tag.outputs.tag }} already exists"
+            exit 1
+          fi
 
       - name: Build the package
         run: npm run build:lib
@@ -54,15 +75,18 @@ jobs:
       - name: Create the release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.tag.outputs.tag }}
         run: |
-          version="${GITHUB_REF_NAME#v}"
+          version="${TAG#v}"
           notes="npm install night-city-ui@${version}
-          
-          Published from this tag by the Publish to npm workflow with npm provenance.
+
+          Built from this tag by the GitHub Release workflow; the same version on
+          npm carries an npm provenance attestation from OIDC trusted publishing.
           Docs: https://dan-netrunner.github.io/night-city-ui/"
-          args=(night-city-ui-*.tgz)
-          if ls *.sigstore.json >/dev/null 2>&1; then args+=(*.sigstore.json); fi
-          gh release create "$GITHUB_REF_NAME" --verify-tag \
+          assets=(night-city-ui-*.tgz)
+          if ls *.sigstore.json >/dev/null 2>&1; then assets+=(*.sigstore.json); fi
+          gh release create "$TAG" \
+            --target "$(git rev-parse HEAD)" \
             --title "night-city-ui ${version}" \
             --notes "$notes" \
-            "${args[@]}"
+            "${assets[@]}"
