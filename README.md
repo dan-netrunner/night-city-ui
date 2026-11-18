@@ -6,6 +6,8 @@
 [![npm version](https://img.shields.io/npm/v/night-city-ui.svg)](https://www.npmjs.com/package/night-city-ui)
 [![CI](https://github.com/dan-netrunner/night-city-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/dan-netrunner/night-city-ui/actions/workflows/ci.yml)
 [![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/dan-netrunner/night-city-ui/badge)](https://scorecard.dev/viewer/?uri=github.com/dan-netrunner/night-city-ui)
+[![OpenSSF Best Practices: passing](https://www.bestpractices.dev/projects/16895/badge)](https://www.bestpractices.dev/projects/16895)
+[![OpenSSF Baseline: level 1](https://www.bestpractices.dev/projects/16895/baseline)](https://www.bestpractices.dev/projects/16895)
 [![React 18+](https://img.shields.io/badge/React-%E2%89%A518-61dafb.svg)](https://react.dev)
 [![Types included](https://img.shields.io/badge/TypeScript-types%20included-3178c6.svg)](https://www.typescriptlang.org)
 

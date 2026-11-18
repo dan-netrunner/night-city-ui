@@ -7,6 +7,19 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The README now links the badges the project has earned: [OpenSSF Best Practices
+  `passing`](https://www.bestpractices.dev/projects/16895) and
+  [OpenSSF Baseline level 1](https://www.bestpractices.dev/projects/16895). The badge program asks
+  projects to publish achievements on the front page, and the criteria say within 48 hours of
+  recognition.
+- [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md): the layer order (tokens → styles → components
+  → theme → entry), how a skin switch is one attribute and no rebuild, the two builds from one
+  source tree, what the public surface is, and the measured rebuild check (two clean
+  `npm run build:lib` runs produced 16 files with identical sha256 per file).
+- A **Governance and roles** section in `CONTRIBUTING.md`: who holds authority, what a contributor
+  and a reporter are responsible for, how a decision is actually made, and what changes when a
+  second maintainer arrives. It documents the limits honestly — single owner, no second reviewer,
+  no continuity plan.
 - `.bestpractices.json` now answers the badge's classic (non-OSPS) criteria for the passing
   level too — 43 criteria with a justification each, `N/A` where cryptography is out of scope
   for a component kit and `Unmet` where it is simply not done (no dynamic analysis, no

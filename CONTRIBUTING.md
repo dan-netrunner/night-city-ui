@@ -26,6 +26,9 @@ npm run dev   # http://localhost:5173
 | `src/styles/app.css` | Docs site layout only — never needed by consumers |
 | `src/pages/*` | Demo/documentation pages |
 | `GUIA_DE_USO.md` | Spanish guide |
+| `docs/ARCHITECTURE.md` | Layers, theming mechanism, the two builds, the public surface |
+| `docs/SECURITY_MODEL.md` | Trust boundary, actors, assets, attack surface |
+| `docs/COMPONENTS.md` | API reference for every exported component |
 | `.github/workflows/` | Pages deploy and npm publish |
 
 ## Rules of the kit
@@ -76,6 +79,33 @@ Policy: any behavioural change must add or update a test in the same pull reques
 Maintainers only. `npm version patch|minor|major`, merge to `main`, and GitHub Actions publishes to npm with provenance through OIDC trusted publishing and deploys the docs site to `gh-pages`. Pushing the version tag also opens the matching GitHub Release with the tarball attached. Contributors never need npm credentials or tokens.
 
 Every user-visible change gets a line in [CHANGELOG.md](./CHANGELOG.md) under *Unreleased*; the release commit moves it under the version heading.
+
+## Governance and roles
+
+One role holds authority and one does not, and the entry says so out loud rather than describing
+a committee that does not exist:
+
+| Role | Who | Responsible for |
+| --- | --- | --- |
+| Maintainer | [`@dan-netrunner`](https://github.com/dan-netrunner), the account in [`CODEOWNERS`](./.github/CODEOWNERS) | The roadmap, accepting or rejecting a change, releasing to npm and GitHub, security response, and the badge answers in `.bestpractices.json`. Single owner: `* @dan-netrunner` covers every path. |
+| Contributor | Anyone with a pull request | Proposing a change that passes the checks in [Checks before you open a PR](#checks-before-you-open-a-pr). Contributing grants no merge rights. |
+| Reporter | Anyone filing a [SECURITY.md](./SECURITY.md) report | Describing something exploitable, privately. Enters no other role. |
+
+**How a decision is made.** A change is accepted by opening a pull request against `main`; the
+author decides whether to adopt review feedback; the maintainer merges or closes. There is no
+voting, no lazy-consensus window and no separate technical committee — with one maintainer those
+would be theatre. A disagreement between contributors is settled by the maintainer, and the reason
+is written in the thread instead of left implicit. Proposals that need infrastructure the project
+does not have (a hosted scanner, a signing service, a second organisation) are answered with the
+constraint named, not with silence.
+
+**How this can change.** Adding a maintainer means adding them to `CODEOWNERS` and to the
+repository as an admin or maintainer, in a pull request that says so; the roles above are the
+place that documentation lives, so the badge criteria pointing at them stay true. The flip side is
+also documented rather than glossed: with a single maintainer there is no second person to review
+that maintainer's own work, merges land with admin rights past the two-review rule, and there is
+no written plan for who takes over if that person disappears. The badge records those as `Unmet`
+(`two_person_review`, `access_continuity`) — see [Keeping the badge honest](#keeping-the-badge-honest).
 
 ## Permissions
 
