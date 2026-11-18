@@ -7,6 +7,18 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The badge answers were audited criterion by criterion and the entry is now fully authored by
+  this repository: 45 more statuses (level-2 criteria, plus `discussion`, `interfaces_current`,
+  `accessibility_best_practices`, `code_review_standards`, the coverage criteria at 90/80 and the
+  crypto criteria that are genuinely not applicable) and 30 justifications rewritten where the
+  badge site's own autofill had left machine text ("Non-trivial contribution file in repository",
+  "No appropriate folder found for documentation basics", "Repository on GitHub, which uses git").
+  Level 1 goes from 69% to 89% and level 2 from 17% to 39%; level 0 and Baseline level 1 stay at
+  100%. Twenty-two criteria are answered `Unmet` on evidence rather than left blank, and each
+  justification says what would close it.
+- `OSPS-BR-01.02` is not in the answers: the control was retired upstream
+  (`criteria/baseline_criteria_retired.yml`), the column still exists but is no longer gradeable.
+
 - The badge entry now answers the **silver-level** criteria too: 37 classic level-1 MUSTs plus
   `two_person_review`, each with a justification that points at a file, a workflow or a
   measurement. Projected against the site's own grading rules that moves the entry from 15% to 69%
