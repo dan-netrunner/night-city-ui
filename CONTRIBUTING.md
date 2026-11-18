@@ -85,25 +85,42 @@ There is no path to write access except reviewed pull requests: [`CODEOWNERS`](.
 
 [`.bestpractices.json`](./.bestpractices.json) holds the proposed answers for this project's
 [OpenSSF Best Practices badge](https://www.bestpractices.dev/projects/16895) entry. The badge
-system reads it to prefill the form; a maintainer still reviews and saves each answer, and an
-`Unmet` or `N/A` is allowed and expected where it is true.
+site reads it through `RepoJsonDetective` to *propose* answers; a maintainer still reviews and
+saves each one, and an `Unmet` or `N/A` is allowed and expected where it is true.
 
-The file also carries the answers for the badge's own classic criteria. To write them into the
-entry without clicking through every section, use the local helper, which pins the badge
-project's modifier module by commit and checksum and authenticates with your 48-hour session
-cookie:
+Three rules the file has to respect, because the site silently ignores anything else:
+
+- **Keys are the site's column names**, so `osps_ac_01_01_status` — not the display form
+  `OSPS-AC-01.01_status` that the public JSON prints. Keys outside
+  `Project::PROJECT_PERMITTED_FIELDS` are dropped without a word.
+- **There is no `<criterion>_url` field.** A criterion flagged `met_url_required` is satisfied by
+  a URL *inside* its `*_justification` (`Project#contains_url?`), and `Met` without one is graded
+  `criterion_url_required`, which does not count as met. That is why the evidence links live in
+  the justification text.
+- **A `Met` needs at least five characters of justification** and an `N/A` needs one wherever the
+  criterion asks for it; a `MUST` answered `Unmet` fails the level outright.
+
+To write the file into the entry without clicking through six forms, use the local helper. It
+discovers the sections from the site's own choose page, PATCHes each section's edit form, keeps
+every status with its justification, and then re-reads the public JSON to decide whether it
+worked — a rejected save still returns HTTP 200 with the form re-rendered, so the status code
+proves nothing:
 
 ```bash
-./scripts/bestpractices-sync.py --dry-run          # what would be sent
-./scripts/bestpractices-sync.py                    # asks for _BadgeApp_session
+./scripts/bestpractices-sync.py --dry-run        # what would be sent; no network
+./scripts/bestpractices-sync.py --verify-only    # site vs file; read-only, no login
+./scripts/bestpractices-sync.py                  # writes, then verifies
 ```
 
-The session cookie is your live credential: export it in your shell, never commit it, never put
-it in a CI secret, and log out of bestpractices.dev when done to invalidate it.
+It asks for `_BadgeApp_session` with `getpass` and pastes nothing: **do not `export` the cookie**,
+because a value typed on the command line stays in your shell history. Read it from
+DevTools → Application → Cookies after logging in, paste it at the prompt, and log out of
+bestpractices.dev when done — the session cookie is a live write credential for a public record,
+valid 48 hours, and it is deliberately not a CI secret.
 
 When a change adds, removes or alters a control — a CI gate, a workflow permission, the release
-process, a policy in `SECURITY.md` — update the matching `OSPS-*_status` and its `_justification`
-in the same pull request. Never mark something `Met` that cannot be pointed at in this repository.
+process, a policy in `SECURITY.md` — update the matching `_status` and its `_justification` in the
+same pull request. Never mark something `Met` that cannot be pointed at in this repository.
 
 ## License
 

@@ -12,8 +12,9 @@ All notable changes to this project are documented here. The format follows
   for a component kit and `Unmet` where it is simply not done (no dynamic analysis, no
   assertion build).
 - `scripts/bestpractices-sync.py`, a local helper that writes those answers through the badge
-  REST interface using the project's own modifier module, pinned by commit and verified by
-  checksum, authenticated only by your 48-hour session cookie.
+  site's own edit forms (one PATCH per section), asks for the 48-hour session cookie with
+  `getpass` so it never reaches the shell history, and re-reads the public JSON afterwards to
+  decide whether it worked.
 - Test coverage gate. `npm run test:coverage` instruments the shipped surface
   (`src/components/*.tsx` and `src/theme.tsx`; the docs-site pages and the demo workbench are
   excluded because they are not part of the package) and CI enforces 90% statements, 80%
@@ -21,6 +22,14 @@ All notable changes to this project are documented here. The format follows
   Current suite: 92.99% statements (146/157), 84.03% branches, 91.8% functions, 96.4% lines.
 
 ### Fixed
+- Badge answers: the `OSPS-*` keys in `.bestpractices.json` used the display form the public
+  JSON prints (`OSPS-AC-01.01_status`) instead of the column names the site accepts
+  (`osps_ac_01_01_status`), so every one of the 64 controls was silently ignored when the site
+  read the file. Renamed. Nine `<criterion>_url` keys were removed for the same reason — that is
+  not a field: a criterion that requires a URL reads it from its `*_justification`, so
+  `vulnerability_report_process` and `vulnerability_report_private` (both `MUST` at the passing
+  level) would have been written as `Met` and graded "URL required" instead of met, keeping the
+  entry short of `passing`.
 - The header no longer reflows when the active theme changes: the theme switcher keeps
   its position at every width, showing the theme labels only where the row has room for
   them (1280px and up).
