@@ -51,7 +51,8 @@
     "prepublishOnly": "npm run build:lib",
     "preview": "vite preview",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "audit:deps": "node scripts/audit-deps.mjs"
   },
   "peerDependencies": {
     "react": ">=18",

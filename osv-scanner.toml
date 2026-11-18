@@ -1,7 +1,8 @@
-# Scorecard's OSV scan reports GHSA-fc5q-39xc-vjpf through picomatch, reached
-# here only via vite/vitest glob matching. picomatch 4.0.7 is the latest
-# release, no patched version is published, and the package that ships to
-# consumers has zero runtime dependencies. Drop this entry once a fix ships.
-[[IgnoredVulns]]
-id = "GHSA-fc5q-39xc-vjpf"
-reason = "Dev-only dependency of vite/vitest; no patched picomatch release exists and the published package has no runtime dependencies."
+# Exceptions for the dependency gates: `npm run audit:deps`
+# (scripts/audit-deps.mjs, OSV.dev over the whole lockfile) and Scorecard's OSV
+# scan both read this file. An entry is only acceptable with a written reason,
+# a scope note (development or runtime) and what would remove it.
+#
+# No exceptions are in force: the last one, GHSA-fc5q-39xc-vjpf (ReDoS in
+# picomatch via vite), was withdrawn upstream on 2026-11-18, so
+# `npm run audit:deps` and `npm audit` both report zero advisories.

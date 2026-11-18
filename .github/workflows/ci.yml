@@ -31,9 +31,13 @@ jobs:
         run: npm ci
 
       - name: Audit the published surface
-        # Consumers must never inherit an advisory; dev-only advisories are
-        # tracked in publish-npm.yml (picomatch has no upstream fix yet).
+        # Consumers must never inherit an advisory.
         run: npm audit --omit=dev --audit-level=high
+
+      - name: Audit every dependency (OSV)
+        # Development toolchain included; exceptions need a reason in
+        # osv-scanner.toml. --self-test proves the detector is still working.
+        run: npm run audit:deps -- --self-test
 
       - name: Test
         run: npm test
