@@ -11,6 +11,11 @@ All notable changes to this project are documented here. The format follows
   or creates a release asks for write on the repository contents.
 - `release.yml` can be dispatched against an existing tag, so older versions can
   get a GitHub Release with a signed artifact attached.
+- The release workflow builds on Node 24, whose bundled npm already satisfies the
+  OIDC trusted-publishing minimum, instead of installing npm during the job.
+- The release artifact is attested with `actions/attest-build-provenance`.
+- `scorecard.yml` reads branch protection rules when a `SCORECARD_REPO_TOKEN`
+  secret is present.
 
 ### Added
 - Vitest suite for the component kit and `ThemeProvider` (33 tests).
