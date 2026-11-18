@@ -83,6 +83,15 @@ labels, ARIA wiring and behaviour, `theme.test.tsx` for the provider and the per
 The build is repeatable from a clean checkout. Measured on 2026-11-18: two consecutive
 `npm run build:lib` runs, with `dist/` deleted between them, produced 16 files with identical
 sha256 per file — `night-city-ui.js`, `style.css`, the 13 declaration files and `favicon.svg`
-(copied from `public/`). Same lockfile, same toolchain, same machine — that is the scope of what
-was checked; it is not a claim of hermetic, cross-machine reproducibility, which the badge grades
-separately as `build_reproducible`.
+(copied from `public/`).
+
+There is also one accidental cross-environment control. The docs site is built by the Pages
+workflow on a GitHub runner with Node 22, and its output is published; the local build of the same
+commit produced `assets/index-Cry9YrXr.js`, and the file served from
+`https://dan-netrunner.github.io/night-city-ui/` carries the **same name and the same sha256**
+(`eb232977a4cf8dda…`) — built on a different machine, a different Node major version and a
+different npm. That is a real second-environment match, but on the docs bundle, from a machine
+that shares the toolchain family and the lockfile. It is not what the badge means by
+`build_reproducible`: that criterion wants two independent builders, a documented hermetic process
+and the comparison published for third parties. What has been verified is `build_repeatable`, which
+is the level-1 criterion; `build_reproducible` is recorded `Unmet`.
