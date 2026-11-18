@@ -150,17 +150,24 @@ So "who" = *this workflow, on `main`, at that commit* — auditable via
 
 ## 5. The GitHub Release assets
 
-From `v0.1.3` on, each version tag also produces a GitHub Release carrying the same
-tarball plus a CycloneDX SBOM:
+From `v0.1.3` on, each version tag produces a GitHub Release carrying four assets:
+the tarball, a CycloneDX SBOM, the Sigstore bundle and the in-toto statement
+extracted from it.
 
 ```sh
 gh release view v0.1.3 --repo dan-netrunner/night-city-ui \
   --json assets --jq '.assets[] | "\(.name) \(.size) \(.digest)"'
 ```
 
-Those assets are attested by `release.yml` with `actions/attest-build-provenance`
-(SLSA v1 build provenance, Sigstore, Rekor). Verify the download, do not take my
-word for it:
+The two proof files exist so the verification does not depend on GitHub's
+attestation storage being reachable or on a release↔attestation link: Scorecard's
+own probes only look at these names — `.sigstore` / `.sigstore.json` / `.asc` /
+`.sig` / `.sign` / `.minisig` count as a signature, `.intoto.jsonl` counts as
+provenance (`probes/releasesAreSigned`, `probes/releasesHaveProvenance`). Before
+they were attached, `v0.1.3` scored `Signed-Releases = 0` while its attestation
+was verifiable by digest.
+
+Verify the tarball itself, not the files about it:
 
 ```sh
 gh release download v0.1.3 -p '*.tgz' -D ./dl
@@ -200,8 +207,9 @@ integration`. Two lessons for anyone auditing a release:
 1. An attestation is only evidence if you query it — `gh attestation verify`
    returning `HTTP 404` on the asset digest means *absent*, not *broken*.
 2. A green release run is not proof of a signed artifact. `release.yml` now grants
-   the scope, dropped `continue-on-error` on signing, and has a step that fails the
-   run unless the action reports an `attestation-id`.
+   the scope, dropped `continue-on-error` on signing, fails the run unless the
+   action reports an `attestation-id`, and uploads the bundle and the statement as
+   release assets so the proof is downloadable instead of only queryable.
 
 ## 6. If verification fails
 
