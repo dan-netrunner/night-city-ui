@@ -144,23 +144,30 @@ jobs:
         id: attest
         with:
           subject-path: night-city-ui-*.tgz
-          bundle-path: night-city-ui-${{ steps.tag.outputs.version }}.tgz.sigstore.json
 
       - name: Publish the signature and the attestation as release assets
         # GitHub keeps the bundle in attestation storage, reachable by artifact
         # digest, but that is invisible on the release itself - it is also why
         # OpenSSF's Signed-Releases reported 0 for a release that *was* attested.
-        # The bundle name (.sigstore.json) and the extracted in-toto envelope
-        # (.intoto.jsonl) are the names the ecosystem's tooling looks for.
+        # `.sigstore.json` (a signature) and `.intoto.jsonl` (provenance) are the
+        # asset names those probes look for. The action reports where it wrote the
+        # bundle; it does not take a destination.
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ steps.tag.outputs.tag }}
+          VERSION: ${{ steps.tag.outputs.version }}
+          WRITTEN_BUNDLE: ${{ steps.attest.outputs.bundle-path }}
         run: |
-          bundle="night-city-ui-${{ steps.tag.outputs.version }}.tgz.sigstore.json"
-          statement="${bundle%.sigstore.json}.intoto.jsonl"
-          # The bundle wraps the in-toto statement; the field is spelled
-          # dspEnvelope by the Sigstore protobuf JSON and dsseEnvelope by the
-          # GitHub storage API, so accept either and refuse an empty result.
+          bundle="night-city-ui-${VERSION}.tgz.sigstore.json"
+          statement="night-city-ui-${VERSION}.tgz.intoto.jsonl"
+          if [ -z "$WRITTEN_BUNDLE" ] || [ ! -s "$WRITTEN_BUNDLE" ]; then
+            echo "::error::the attestation action reported no bundle at '$WRITTEN_BUNDLE'"
+            exit 1
+          fi
+          cp "$WRITTEN_BUNDLE" "$bundle"
+          # The field is dspEnvelope in the Sigstore protobuf JSON and
+          # dsseEnvelope in GitHub's storage API: accept either, accept nothing
+          # that is not a signed in-toto statement.
           jq -c '(.dsseEnvelope // .dspEnvelope)' "$bundle" > "$statement"
           jq -e 'has("payloadType") and has("payload") and (.signatures | length > 0)' "$statement" > /dev/null
           gh release upload "$TAG" "$bundle" "$statement" --clobber
