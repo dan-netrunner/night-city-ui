@@ -31,7 +31,10 @@ jobs:
     steps:
       - name: Resolve the tag
         id: tag
-        run: echo "tag=${{ inputs.tag || github.ref_name }}" >> "$GITHUB_OUTPUT"
+        run: |
+          tag="${{ inputs.tag || github.ref_name }}"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version=${tag#v}" >> "$GITHUB_OUTPUT"
 
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -141,7 +144,33 @@ jobs:
         id: attest
         with:
           subject-path: night-city-ui-*.tgz
-          bundle-path: attestation.json
+
+      - name: Publish the signature and the attestation as release assets
+        # GitHub keeps the bundle in attestation storage, reachable by artifact
+        # digest, but that is invisible on the release itself - it is also why
+        # OpenSSF's Signed-Releases reported 0 for a release that *was* attested.
+        # `.sigstore.json` (a signature) and `.intoto.jsonl` (provenance) are the
+        # asset names those probes look for. The action reports where it wrote the
+        # bundle; it does not take a destination.
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.tag.outputs.tag }}
+          VERSION: ${{ steps.tag.outputs.version }}
+          WRITTEN_BUNDLE: ${{ steps.attest.outputs.bundle-path }}
+        run: |
+          bundle="night-city-ui-${VERSION}.tgz.sigstore.json"
+          statement="night-city-ui-${VERSION}.tgz.intoto.jsonl"
+          if [ -z "$WRITTEN_BUNDLE" ] || [ ! -s "$WRITTEN_BUNDLE" ]; then
+            echo "::error::the attestation action reported no bundle at '$WRITTEN_BUNDLE'"
+            exit 1
+          fi
+          cp "$WRITTEN_BUNDLE" "$bundle"
+          # The field is dspEnvelope in the Sigstore protobuf JSON and
+          # dsseEnvelope in GitHub's storage API: accept either, accept nothing
+          # that is not a signed in-toto statement.
+          jq -c '(.dsseEnvelope // .dspEnvelope)' "$bundle" > "$statement"
+          jq -e 'has("payloadType") and has("payload") and (.signatures | length > 0)' "$statement" > /dev/null
+          gh release upload "$TAG" "$bundle" "$statement" --clobber
 
       - name: Confirm the attestation was stored
         # v0.1.3 shipped unsigned because this step was best-effort: the action
