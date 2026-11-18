@@ -148,20 +148,62 @@ No human's npm password was involved. The identity chain is:
 So "who" = *this workflow, on `main`, at that commit* — auditable via
 `dist.attestations.url` and the Actions run.
 
-GitHub **Release** assets (tarballs attached to a tag page) do not exist yet
-for this repository, so `gh attestation verify` has nothing to check against
-today:
+## 5. The GitHub Release assets
+
+From `v0.1.3` on, each version tag also produces a GitHub Release carrying the same
+tarball plus a CycloneDX SBOM:
 
 ```sh
-gh release list --repo dan-netrunner/night-city-ui   # currently empty
+gh release view v0.1.3 --repo dan-netrunner/night-city-ui \
+  --json assets --jq '.assets[] | "\(.name) \(.size) \(.digest)"'
 ```
 
-Once the `release.yml` workflow starts producing releases with artifact
-attestations, `gh attestation verify --owner dan-netrunner <asset>` will be the
-tool for those assets. For the npm package, `npm audit signatures` (§1–3)
-already covers the same ground.
+Those assets are attested by `release.yml` with `actions/attest-build-provenance`
+(SLSA v1 build provenance, Sigstore, Rekor). Verify the download, do not take my
+word for it:
 
-## 5. If verification fails
+```sh
+gh release download v0.1.3 -p '*.tgz' -D ./dl
+gh attestation verify ./dl/night-city-ui-0.1.3.tgz --repo dan-netrunner/night-city-ui
+```
+
+What a passing result must say, and this is the part worth reading:
+
+- `subject … name: night-city-ui-0.1.3.tgz, digest sha256:d9052b54…baac` — the
+  subject digest equals the asset's `sha256:` digest from the command above, so
+  the statement is about the bytes you downloaded;
+- `buildType: …/workflow/v1` with `path: .github/workflows/release.yml`,
+  `ref: refs/heads/main`;
+- `builder.id` and `buildSignerURI` on `github.com/dan-netrunner/night-city-ui`;
+- `sourceRepositoryDigest` pinned to a commit, and `runInvocationURI` pointing at
+  the exact Actions run and attempt.
+
+The tarball is reproducible: rebuilding `npm run build:lib && npm pack` from the
+tag gives the same `sha256`, so a mismatch means the asset was replaced, not that
+the build drifted.
+
+One nuance about `v0.1.3`: its release was created by the tag push and the
+attestation was added by a later run of the same workflow, after the signing
+permission was fixed. GitHub therefore resolves the record **by artifact digest**
+(`GET /repos/…/attestations/sha256:…` answers, and `gh attestation verify` uses
+that), while the release entry itself has no attestation link
+(`GET /repos/…/releases/{id}/attestations` does not). The digest binding is what
+carries the guarantee; check both if you want the release page to show it too.
+
+### What this caught once, and how to spot it yourself
+
+`v0.1.3` first appeared on the releases page **unsigned**: the signing step lacked
+the `attestations: write` permission and was marked best-effort, so the run went
+green while the attestation call failed with `Resource not accessible by
+integration`. Two lessons for anyone auditing a release:
+
+1. An attestation is only evidence if you query it — `gh attestation verify`
+   returning `HTTP 404` on the asset digest means *absent*, not *broken*.
+2. A green release run is not proof of a signed artifact. `release.yml` now grants
+   the scope, dropped `continue-on-error` on signing, and has a step that fails the
+   run unless the action reports an `attestation-id`.
+
+## 6. If verification fails
 
 If signatures or attestations are missing or invalid, or the integrity hash
 does not match what the registry reports: do not use the package, and report

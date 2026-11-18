@@ -1,8 +1,8 @@
 # Security model
 
-Honest scope of a presentational component kit. Written against `main` at the
-time of the 0.1.2 release; every claim below is backed by a command that can
-be re-run.
+Honest scope of a presentational component kit. Written against `main`; every
+claim below is backed by a command that can be re-run, and the artifact bindings
+match the published `night-city-ui` releases.
 
 ## What it is / trust boundary
 
@@ -133,8 +133,10 @@ workers, no postMessage handlers.
 - **No fuzzing.** There is no native parser and no memory-unsafe code to fuzz;
   the input space is typed React props, covered by unit and property-based
   tests instead.
-- **No SBOM yet**, and no GitHub Release assets yet — npm provenance is the
-  only artifact binding today.
+- **SBOM**: each GitHub Release attaches a CycloneDX 1.5 document of the runtime
+  graph, which is empty on purpose (no runtime dependencies); npm provenance is the
+  binding for the registry artifact. See
+  [VERIFYING_A_RELEASE.md](./VERIFYING_A_RELEASE.md) for both.
 - **Visual spoofing is not mitigated by code:** a theme (or an application's
   CSS override) that imitates browser chrome or another site is a design
   concern the kit cannot detect or prevent.

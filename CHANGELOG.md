@@ -4,7 +4,7 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [0.1.4] - 2026-11-18
 
 ### Changed
 - `release.yml` now grants the job `attestations: write`, so build provenance is
@@ -12,6 +12,10 @@ All notable changes to this project are documented here. The format follows
   was best-effort and its failure was swallowed. The attestation id is now asserted,
   and re-running the workflow for a tag that already has a release downloads the
   published asset and attests those bytes instead of failing or attesting a rebuild.
+- `docs/VERIFYING_A_RELEASE.md` gained the GitHub Release section (asset digests, `gh attestation
+  verify`, what a passing statement must contain) and `docs/SECURITY_MODEL.md` no longer claims
+  there is no SBOM: both were written while the release workflow was still untested against a
+  real tag, and are now backed by the shipped `v0.1.3` assets.
 
 ## [0.1.3] - 2026-11-18
 
@@ -80,7 +84,8 @@ All notable changes to this project are documented here. The format follows
 - Docs site with component workbench, playground, theme comparison and colour lab, deployed to GitHub Pages.
 - README badges for license, CI status, npm version, React and TypeScript support.
 
-[unreleased]: https://github.com/dan-netrunner/night-city-ui/compare/v0.1.3...HEAD
+[unreleased]: https://github.com/dan-netrunner/night-city-ui/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/dan-netrunner/night-city-ui/releases/tag/v0.1.4
 [0.1.3]: https://github.com/dan-netrunner/night-city-ui/releases/tag/v0.1.3
 [0.1.2]: https://github.com/dan-netrunner/night-city-ui/tree/v0.1.2
 [0.1.1]: https://github.com/dan-netrunner/night-city-ui/tree/v0.1.1
