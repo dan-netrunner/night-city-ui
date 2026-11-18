@@ -39,7 +39,7 @@ export function Panel({
         <div className="cp-panel__head">
           <div className="cp-panel__heading">
             {kicker && <div className="cp-panel__kicker">{kicker}</div>}
-            {title && <h3 className="cp-panel__title">{title}</h3>}
+            {title && <h2 className="cp-panel__title">{title}</h2>}
           </div>
           {(actions || telemetry) && (
             <div className="cp-panel__actions">
