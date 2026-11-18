@@ -4,6 +4,15 @@ All notable changes to this project are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [semantic versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+- `release.yml` now grants the job `attestations: write`, so build provenance is
+  actually persisted: v0.1.3 shipped without an attestation because the signing step
+  was best-effort and its failure was swallowed. The attestation id is now asserted,
+  and re-running the workflow for a tag that already has a release downloads the
+  published asset and attests those bytes instead of failing or attesting a rebuild.
+
 ## [0.1.3] - 2026-11-18
 
 ### Changed
