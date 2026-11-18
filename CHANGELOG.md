@@ -7,6 +7,12 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- The repeatability claim in `docs/ARCHITECTURE.md` now has a second-environment data point: the
+  docs bundle published by the Pages workflow (GitHub runner, Node 22) is byte-identical —
+  `assets/index-Cry9YrXr.js`, sha256 `eb232977a4cf8dda…` — to the one built locally on Node
+  24.21.0 / npm 11.19.0. Same conclusion as before, better evidence, and still explicitly *not*
+  the hermetic two-builder comparison the badge's `build_reproducible` asks for.
+
 - The design credit is now a link. The docs-site footer already named
   [Vladimír Vilimovský](https://www.behance.net/vladimirvilimovsky) as the author of
   "Cyberpunk 2077—User Interface"; his name now points at his Behance, in the footer and in the
