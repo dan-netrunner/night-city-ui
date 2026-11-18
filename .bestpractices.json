@@ -87,7 +87,7 @@
   "description_good_status": "Met",
   "discussion_justification": "Three mechanisms, all web-based, searchable, addressable by URL and open to anyone without installing proprietary software: GitHub Issues at https://github.com/dan-netrunner/night-city-ui/issues for defects, https://github.com/dan-netrunner/night-city-ui/pulls for proposed changes (each review thread is permalinked) and SECURITY.md for private reports. GitHub Discussions is deliberately not enabled; issues and pull-request threads already cover both.",
   "discussion_status": "Met",
-  "documentation_achievements_justification": "The front page links the achievements: OpenSSF Best Practices 'passing' and OpenSSF Baseline level 1 (added the day the confirmation email arrived), alongside the OpenSSF Scorecard badge. https://github.com/dan-netrunner/night-city-ui#readme",
+  "documentation_achievements_justification": "The front page links the achievements: the OpenSSF Best Practices 'passing' badge and the OpenSSF Baseline badge, which reached level 1 on 2026-11-18 and level 2 the same day once the last Baseline-2 control (a Developer Certificate of Origin sign-off, enforced by the required 'dco' status check) landed, alongside the OpenSSF Scorecard badge. https://github.com/dan-netrunner/night-city-ui#readme",
   "documentation_achievements_status": "Met",
   "documentation_architecture_justification": "docs/ARCHITECTURE.md describes the layer order and its one-way dependency direction, the theming mechanism (a block of CSS custom properties per skin, switched by one attribute), the two builds from one source tree, the public surface and how it is verified. https://github.com/dan-netrunner/night-city-ui/blob/main/docs/ARCHITECTURE.md",
   "documentation_architecture_status": "Met",

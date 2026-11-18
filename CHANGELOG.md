@@ -45,9 +45,9 @@ All notable changes to this project are documented here. The format follows
   in the same release, below.
 - The README now links the badges the project has earned: [OpenSSF Best Practices
   `passing`](https://www.bestpractices.dev/projects/16895) and
-  [OpenSSF Baseline level 1](https://www.bestpractices.dev/projects/16895). The badge program asks
-  projects to publish achievements on the front page, and the criteria say within 48 hours of
-  recognition.
+  [OpenSSF Baseline](https://www.bestpractices.dev/projects/16895), which reached level 1 and then
+  level 2 on 2026-11-18. The badge program asks projects to publish achievements on the front page,
+  and the criteria say within 48 hours of recognition.
 - [`docs/ARCHITECTURE.md`](./docs/ARCHITECTURE.md): the layer order (tokens → styles → components
   → theme → entry), how a skin switch is one attribute and no rebuild, the two builds from one
   source tree, what the public surface is, and the measured rebuild check (two clean
