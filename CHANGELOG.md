@@ -28,6 +28,7 @@ All notable changes to this project are documented here. The format follows
 - GitHub Actions pinned to commit SHAs instead of moving tags.
 - Property-based test for `Progress` (fast-check), guarding the clamp, the fill and the aria values for arbitrary inputs; also what Scorecard's Fuzzing check looks for.
 - Documented policies in `SECURITY.md` (secrets and credentials, dependency and licence thresholds, SAST findings) and in `CONTRIBUTING.md` (testing environment and permission escalation) — all describing controls that already run, for the OpenSSF OSPS baseline.
+- `npm run audit:deps` gates every locked dependency, development included, against OSV.dev, and CI runs it with `--self-test` so a dead detector or a blocked network cannot report a pass. The `picomatch` exception is gone: GitHub withdrew GHSA-fc5q-39xc-vjpf, so `osv-scanner.toml` records no exceptions and the whole tree audits clean.
 
 ### Fixed
 - Solid badges now take their label colour from the tone's ink token, so `cp-badge--solid` passes AA contrast on every skin (was 1.74:1 on the default accent).

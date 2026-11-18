@@ -27,11 +27,16 @@ within a week, and a fix or an honest "won't fix, here is why" shortly after.
 
 - `npm audit --omit=dev` runs in CI and must pass before any publish: the
   dependency surface consumers install has to be clean.
-- Dev-tooling advisories are tracked in the CI workflow comments. One is
-  currently open upstream and unpatchable: a ReDoS in `picomatch`
-  ([GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf))
-  reached through `vite`. It is build-time only, its glob patterns are
-  repo-authored, and it cannot reach a published consumer.
+- `npm run audit:deps` (`scripts/audit-deps.mjs`) queries **OSV.dev for every
+  package in the lockfile, development included**, and fails the build on any
+  advisory. Exceptions live in [`osv-scanner.toml`](./osv-scanner.toml) and each
+  one needs a written reason; the file currently holds none. The same command
+  runs with `--self-test`, which requires a known-vulnerable fixture to be
+  reported, so a changed API or a blocked network cannot fake a pass.
+- Nothing is being ignored today: the last exception,
+  [GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf)
+  (ReDoS in `picomatch`, reached through `vite`), was **withdrawn upstream** and
+  `npm audit` now reports zero advisories in the whole tree.
 - Dependency lifecycle scripts are blocked unless allow-listed in
   `package.json` → `allowScripts`.
 - Every release is published from GitHub Actions with npm provenance
@@ -71,20 +76,20 @@ npm artifacts cannot be recalled, only marked.
 
 What is enforced against the dependency surface, and how far:
 
-- **Release gate.** CI and the publish workflow both run
-  `npm audit --omit=dev --audit-level=high`; a failing audit blocks the
-  release, and the publish job runs it before `npm publish`.
+- **Release gate.** CI and the publish workflow run two checks:
+  `npm audit --omit=dev --audit-level=high` for what consumers inherit, and
+  `npm run audit:deps` for the whole lockfile, development dependencies
+  included. Either failing blocks the release.
 - **Zero runtime dependencies.** The shipped package declares no
   `dependencies` at all (React is a peer dependency), so the advisory
   surface a consumer inherits is empty by construction.
-- **Dev advisories are tracked, not release-blocking.** The one currently
-  open is
+- **Dev advisories block too.** They are no longer tolerated silently: an
+  advisory on a development dependency fails `npm run audit:deps` unless it is
+  listed in [`osv-scanner.toml`](./osv-scanner.toml) with a written reason and
+  a scope note. The last entry,
   [GHSA-fc5q-39xc-vjpf](https://github.com/advisories/GHSA-fc5q-39xc-vjpf)
-  (ReDoS in `picomatch`, reached through `vite`). No upstream patch exists,
-  it is development scope, it cannot reach a published artifact, and
-  Dependabot has it auto-dismissed.
-  [`osv-scanner.toml`](./osv-scanner.toml) records the same reasoning for
-  the Scorecard scan. Re-check with `npm audit` once picomatch ships a fix.
+  (ReDoS in `picomatch` through `vite`, development scope only, never shipped),
+  was removed when GitHub withdrew the advisory; the ignore list is empty.
 - **Dependabot cadence.** Weekly, grouped into at most three open pull
   requests per ecosystem
   ([`.github/dependabot.yml`](./.github/dependabot.yml)). Major bumps of

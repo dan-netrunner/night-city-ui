@@ -107,17 +107,19 @@ workers, no postMessage handlers.
 - **Publishing** is OIDC trusted publishing from GitHub Actions with
   `npm publish --provenance` — no stored npm token; see
   [VERIFYING_A_RELEASE.md](./VERIFYING_A_RELEASE.md).
-- **Dependabot** version updates for npm and Actions weekly. (Dependabot
-  *security* updates are currently disabled in repo settings — with zero
-  runtime dependencies there is no consumer-facing advisory for it to act on.)
+- **Dependabot** alerts and version updates for npm and Actions weekly.
+  (Automatically-submitted security pull requests remain off in repo settings —
+  with zero runtime dependencies there is no consumer-facing advisory for one to
+  fix.)
 - **Secret scanning with push protection** is enabled on the repository.
 - **CodeQL** (`security-and-quality` suite) runs over `javascript-typescript`
   and workflow files on push and weekly.
-- **Open advisory, dev-only:** `picomatch` ≤ 4.0.7 (GHSA-fc5q-39xc-vjpf, ReDoS)
-  is reachable through `vite`/`vitest` in the *development* tree only. It has
-  no upstream patch. It cannot reach consumers: it is not in the published
-  package (zero dependencies, and its globs are repo-authored, so the
-  vulnerable code path never sees untrusted input in this project).
+- **No open advisories anywhere in the tree.** The one that used to be listed
+  here, `picomatch` ≤ 4.0.7 (GHSA-fc5q-39xc-vjpf, ReDoS, reachable through
+  `vite`/`vitest` in the *development* tree only), was withdrawn upstream, and
+  it was never part of the published package. `npm run audit:deps` now blocks a
+  release on a development advisory too, unless `osv-scanner.toml` records a
+  reason for it.
 
 ## Known limitations / out of scope
 
