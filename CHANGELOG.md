@@ -26,6 +26,7 @@ All notable changes to this project are documented here. The format follows
 - `SECURITY.md`, `CODEOWNERS`, issue and pull request templates, code of conduct.
 - GitHub Actions pinned to commit SHAs instead of moving tags.
 - Property-based test for `Progress` (fast-check), guarding the clamp, the fill and the aria values for arbitrary inputs; also what Scorecard's Fuzzing check looks for.
+- Documented policies in `SECURITY.md` (secrets and credentials, dependency and licence thresholds, SAST findings) and in `CONTRIBUTING.md` (testing environment and permission escalation) — all describing controls that already run, for the OpenSSF OSPS baseline.
 
 ### Fixed
 - Solid badges now take their label colour from the tone's ink token, so `cp-badge--solid` passes AA contrast on every skin (was 1.74:1 on the default accent).
