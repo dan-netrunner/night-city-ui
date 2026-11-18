@@ -40,9 +40,10 @@ npm run dev   # http://localhost:5173
 ## Checks before you open a PR
 
 ```bash
-npm test          # vitest suite for the kit
-npm run build     # tsc --noEmit + docs build — this is what CI runs
-npm run build:lib # package build: ESM bundle + style.css + .d.ts
+npm test              # vitest suite for the kit
+npm run test:coverage # the same suite plus the coverage thresholds CI enforces
+npm run build         # tsc --noEmit + docs build — this is what CI runs
+npm run build:lib     # package build: ESM bundle + style.css + .d.ts
 ```
 
 CI runs all three on every pull request, plus `npm audit --omit=dev` and a check that the tarball contains only library output. New components need a test: render it, assert the accessible role or label, and assert the thing that breaks if the markup drifts.
@@ -57,7 +58,11 @@ The supported environment is Vitest with the `jsdom` environment, configured in 
 
 34 tests cover the kit today. [`src/components/kit.test.tsx`](./src/components/kit.test.tsx) renders the components and asserts their accessible roles, labels and ARIA wiring — buttons and fields, tabs keyboard behaviour, modal and toasts, the code-copy — and [`src/theme.test.tsx`](./src/theme.test.tsx) drives `ThemeProvider` through skin switching, the `theme-color` meta and `nc-theme` persistence, including a storage backend that throws. A property-based fast-check test ([`progress.property.test.tsx`](./src/components/progress.property.test.tsx)) pins the `Progress` clamp and aria values for arbitrary inputs.
 
-Policy: any behavioural change must add or update a test in the same pull request, and every new component needs at least one test asserting its accessible role or label. A red suite blocks the PR — the required `build` check (the CI job) runs `npm test` among its steps.
+Policy: any behavioural change must add or update a test in the same pull request, and every new component needs at least one test asserting its accessible role or label. A red suite blocks the PR — the required `build` check (the CI job) runs the suite among its steps.
+
+### Coverage
+
+`npm run test:coverage` instruments the **shipped surface only** (`src/components/*.tsx` and `src/theme.tsx`; the docs-site pages and the demo `ComponentWorkbench` are excluded because they are not what the package exports). The thresholds live in [`vitest.config.ts`](./vitest.config.ts) — 90% statements, 80% branches, 85% functions, 90% lines — and CI enforces them with `set -o pipefail`, so `tee` cannot mask a threshold failure. The measured numbers are posted to the run's job summary.
 
 ## Commits and pull requests
 
