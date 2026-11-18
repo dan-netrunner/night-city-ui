@@ -6,6 +6,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+- Workflow tokens are read-only by default; only the job that pushes `gh-pages`
+  or creates a release asks for write on the repository contents.
+- `release.yml` can be dispatched against an existing tag, so older versions can
+  get a GitHub Release with a signed artifact attached.
+
 ### Added
 - Vitest suite for the component kit and `ThemeProvider` (33 tests).
 - CI on pull requests: test, audit, docs build, package build and a payload check.
