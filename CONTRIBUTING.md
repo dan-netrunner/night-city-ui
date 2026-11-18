@@ -76,6 +76,17 @@ Every user-visible change gets a line in [CHANGELOG.md](./CHANGELOG.md) under *U
 
 There is no path to write access except reviewed pull requests: [`CODEOWNERS`](./.github/CODEOWNERS) routes every file to the maintainer, and `main` requires two approving reviews, the required status checks (`build` and both CodeQL analyses) and an up-to-date branch. Repository access is never granted automatically; collaborator permissions are assigned manually, at the lowest level that still does the job. Release authority — npm, the GitHub environments, secrets — stays with the maintainer.
 
+## Keeping the badge honest
+
+[`.bestpractices.json`](./.bestpractices.json) holds the proposed answers for this project's
+[OpenSSF Best Practices badge](https://www.bestpractices.dev/projects/16895) entry. The badge
+system reads it to prefill the form; a maintainer still reviews and saves each answer, and an
+`Unmet` or `N/A` is allowed and expected where it is true.
+
+When a change adds, removes or alters a control — a CI gate, a workflow permission, the release
+process, a policy in `SECURITY.md` — update the matching `OSPS-*_status` and its `_justification`
+in the same pull request. Never mark something `Met` that cannot be pointed at in this repository.
+
 ## License
 
 By opening a pull request you agree your contribution is offered under the MIT license of this project.
