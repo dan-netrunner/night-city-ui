@@ -7,6 +7,16 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- Contributor sign-off. `DCO.txt` carries the Developer Certificate of Origin 1.1 verbatim,
+  `scripts/check-dco.mjs` enforces a matching `Signed-off-by:` trailer on every commit a pull request
+  adds, and `.github/workflows/dco.yml` runs it as a new required status check (`dco`) alongside
+  `build` and the CodeQL analyses. It is first-party code rather than the DCO GitHub App so that no
+  third party gains repository access; `--self-test` runs in the same job, so a checker that stopped
+  detecting violations fails CI instead of waving pull requests through. Bot commits are exempt and
+  each exemption is printed; history before 2026-11-18 is grandfathered (the check reads the pull
+  request's base, not the whole repository).
+- Documentation: `CONTRIBUTING.md` gains a *Sign-off* section and the pull request template a
+  checkbox for it.
 - `require_2FA` and `secure_2FA` answered, which were the last two blank criteria: the maintainer
   account is protected by an authenticator application (TOTP, RFC 6238), not by SMS, which is the
   distinction the criterion draws. Every gradeable criterion in the entry is now answered - 145

@@ -26,6 +26,8 @@ npm run dev   # http://localhost:5173
 | `src/styles/app.css` | Docs site layout only — never needed by consumers |
 | `src/pages/*` | Demo/documentation pages |
 | `GUIA_DE_USO.md` | Spanish guide |
+| `DCO.txt` | the sign-off text every commit attests to |
+| `scripts/` | build- and CI-side tooling (dependency audit, DCO check, badge sync) |
 | `docs/ARCHITECTURE.md` | Layers, theming mechanism, the two builds, the public surface |
 | `docs/SECURITY_MODEL.md` | Trust boundary, actors, assets, attack surface |
 | `docs/COMPONENTS.md` | API reference for every exported component |
@@ -72,7 +74,39 @@ Policy: any behavioural change must add or update a test in the same pull reques
 - Conventional prefixes, matching the existing history: `feat:`, `fix:`, `docs:`, `ci:`, `chore:`.
 - Code, demo usage and docs belong in the same change.
 - Commit with an email you control on GitHub (`git config user.email …`) — the commit author is the attribution you get.
+- Every commit carries a `Signed-off-by:` trailer (see [Sign-off](#sign-off)).
 - In the PR description say what changed and why, and attach a screenshot for anything visual.
+
+### Sign-off
+
+Contributions require the [Developer Certificate of Origin 1.1](./DCO.txt): by signing a commit you
+certify that you wrote it or otherwise have the right to submit it under this project's MIT license,
+and you accept that the sign-off stays in the public history.
+
+```bash
+git commit -s                      # sign one commit
+git rebase --signoff origin/main   # sign every commit on the branch
+```
+
+The trailer has to name the same person as the commit author, so use your real name and a working
+address — `Signed-off-by: Ada Lovelace <ada@example.com>` on a commit authored by `Ada Lovelace
+<ada@example.com>`. A pull request whose commits are unsigned fails the `dco` check and cannot be
+merged into `main`; it is a required status check alongside `build` and the two CodeQL analyses.
+
+Three things about how that check works, because a gate you cannot read is a gate you cannot trust:
+
+- **It is this repository's own code**, not the DCO GitHub App: [`scripts/check-dco.mjs`](./scripts/check-dco.mjs)
+  reads the trailers out of `git log`. The app would mean granting a third-party service read access
+  to the repository, which is exactly what [docs/SECURITY_MODEL.md](./docs/SECURITY_MODEL.md) avoids.
+  Run it locally with `node scripts/check-dco.mjs --from origin/main`, and
+  `node scripts/check-dco.mjs --self-test` shows the cases it is required to distinguish — including
+  the ones it must reject, so a parser that stops seeing violations fails CI instead of reporting
+  every pull request as clean.
+- **Bot commits are exempt**, and the run prints each exemption rather than skipping it silently:
+  `dependabot[bot]` cannot run `git commit -s`.
+- **History before 2026-11-18 is grandfathered.** The check compares against the pull request's base,
+  so it applies to what a branch adds from now on; rewriting 25 merged pull requests to retro-sign
+  them would destroy the history the badge entry cites as evidence.
 
 ## Releases
 

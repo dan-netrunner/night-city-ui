@@ -14,6 +14,7 @@ Closes #
 
 ## Checklist
 
+- [ ] every commit is signed off (`git commit -s`; the `dco` check enforces it)
 - [ ] `npm test` passes
 - [ ] `npm run build` passes (type-check plus docs build)
 - [ ] `npm run build:lib` passes and `npm pack --dry-run` still shows only library output

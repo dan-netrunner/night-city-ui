@@ -1,0 +1,50 @@
+name: DCO
+
+# Requires a Developer Certificate of Origin sign-off on every commit of a pull request.
+# This is the control OpenSSF Baseline level 2 asks for (OSPS-LE-01.01) and what the
+# `dco` criterion of the badge records.
+#
+# Implemented here instead of with the DCO GitHub App on purpose: the app is a third-party
+# OAuth installation with read access to the repository, and the policy written in
+# docs/SECURITY_MODEL.md is to add no external service that can read or write this project.
+# scripts/check-dco.mjs reads the same trailers the app reads, and its --self-test runs
+# first so a parser that stopped detecting violations cannot report a clean pull request.
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dco-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dco:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        # The head commit, not the default refs/pull/N/merge: GitHub's synthetic merge
+        # is authored by whoever opened the pull request and carries no sign-off, so
+        # checking it out would make every pull request fail. fetch-depth 0 is what makes
+        # the base commit resolvable for the range below.
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Self-test the checker
+        # The runner's preinstalled Node is enough: this script only shells out to git,
+        # so there is no reason to add a setup-node step (and a registry fetch) here.
+        run: node scripts/check-dco.mjs --self-test
+
+      - name: Check the Signed-off-by trailers
+        # Passed as an environment variable, never interpolated into the command: event
+        # data stays data. (There is no GITHUB_EVENT_PULL_REQUEST_BASE_SHA on the runner -
+        # the first version of this workflow assumed one, and the script exited 2 rather
+        # than guessing a base.)
+        env:
+          DCO_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: node scripts/check-dco.mjs --self-test --from "$DCO_BASE_SHA"
