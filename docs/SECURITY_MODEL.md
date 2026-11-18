@@ -111,7 +111,9 @@ workers, no postMessage handlers.
   (Automatically-submitted security pull requests remain off in repo settings —
   with zero runtime dependencies there is no consumer-facing advisory for one to
   fix.)
-- **Secret scanning with push protection** is enabled on the repository.
+- **The DCO gate is first-party**: `scripts/check-dco.mjs` reads commit trailers in CI rather
+  than installing the DCO GitHub App, so no third-party OAuth grant is added to the
+  repository. Its `--self-test` runs in the same job as the check.
 - **CodeQL** (`security-and-quality` suite) runs over `javascript-typescript`
   and workflow files on push and weekly.
 - **No open advisories anywhere in the tree.** The one that used to be listed
