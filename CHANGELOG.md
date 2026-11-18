@@ -12,6 +12,11 @@ All notable changes to this project are documented here. The format follows
   was best-effort and its failure was swallowed. The attestation id is now asserted,
   and re-running the workflow for a tag that already has a release downloads the
   published asset and attests those bytes instead of failing or attesting a rebuild.
+- The release now also uploads its own proof: the Sigstore bundle as
+  `<tarball>.sigstore.json` and the in-toto statement extracted from it as
+  `<tarball>.intoto.jsonl`. GitHub's attestation storage keeps a record by
+  artifact digest, but OpenSSF `Signed-Releases` reads the release's assets, which
+  is why an attested release still scored 0 until the bundle travelled with it.
 
 ## [0.1.3] - 2026-11-18
 
