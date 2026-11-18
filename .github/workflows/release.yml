@@ -62,6 +62,33 @@ jobs:
       - name: Pack
         run: npm pack
 
+      - name: Generate the SBOM
+        # CycloneDX over the runtime dependency graph. The component list is
+        # empty by design - the package ships no runtime dependencies - and that
+        # emptiness is exactly what a consumer wants to read from a machine
+        # readable inventory. --omit=dev because the toolchain is not what ships.
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          sbom="night-city-ui-${TAG#v}.cdx.json"
+          npm sbom --sbom-format cyclonedx --omit=dev > "$sbom"
+          node -e '
+            const fs = require("fs");
+            const file = process.argv[1];
+            const pkg = require("./package.json");
+            const doc = JSON.parse(fs.readFileSync(file, "utf8"));
+            // npm names the root component after the directory, not package.json.
+            doc.metadata.component.name = pkg.name;
+            doc.metadata.component.version = pkg.version;
+            fs.writeFileSync(file, JSON.stringify(doc, null, 2) + "\n");
+            const purl = doc.metadata.component.purl ?? "";
+            if (doc.bomFormat !== "CycloneDX" || !purl.endsWith(pkg.name + "@" + pkg.version)) {
+              console.error("unexpected SBOM:", doc.bomFormat, purl);
+              process.exit(1);
+            }
+            console.log("SBOM", doc.bomFormat, doc.specVersion, purl, "| components:", (doc.components || []).length);
+          ' "$sbom"
+
       - name: Create the release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -72,12 +99,14 @@ jobs:
 
           Built from this tag by the GitHub Release workflow; the same version on
           npm carries an npm provenance attestation from OIDC trusted publishing.
+          Assets: the tarball (also shipped with CHANGELOG.md inside) and a
+          CycloneDX SBOM of its runtime dependencies.
           Docs: https://dan-netrunner.github.io/night-city-ui/"
           gh release create "$TAG" \
             --target "$(git rev-parse HEAD)" \
             --title "night-city-ui ${version}" \
             --notes "$notes" \
-            night-city-ui-*.tgz
+            night-city-ui-*.tgz night-city-ui-*.cdx.json
 
       - name: Attest the artifact
         # Provenance for the uploaded tarball: this is what the OpenSSF
