@@ -7,6 +7,13 @@ All notable changes to this project are documented here. The format follows
 ## [Unreleased]
 
 ### Added
+- `.bestpractices.json` now answers the badge's classic (non-OSPS) criteria for the passing
+  level too — 43 criteria with a justification each, `N/A` where cryptography is out of scope
+  for a component kit and `Unmet` where it is simply not done (no dynamic analysis, no
+  assertion build).
+- `scripts/bestpractices-sync.py`, a local helper that writes those answers through the badge
+  REST interface using the project's own modifier module, pinned by commit and verified by
+  checksum, authenticated only by your 48-hour session cookie.
 - Test coverage gate. `npm run test:coverage` instruments the shipped surface
   (`src/components/*.tsx` and `src/theme.tsx`; the docs-site pages and the demo workbench are
   excluded because they are not part of the package) and CI enforces 90% statements, 80%

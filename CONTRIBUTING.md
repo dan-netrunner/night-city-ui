@@ -88,6 +88,19 @@ There is no path to write access except reviewed pull requests: [`CODEOWNERS`](.
 system reads it to prefill the form; a maintainer still reviews and saves each answer, and an
 `Unmet` or `N/A` is allowed and expected where it is true.
 
+The file also carries the answers for the badge's own classic criteria. To write them into the
+entry without clicking through every section, use the local helper, which pins the badge
+project's modifier module by commit and checksum and authenticates with your 48-hour session
+cookie:
+
+```bash
+./scripts/bestpractices-sync.py --dry-run          # what would be sent
+./scripts/bestpractices-sync.py                    # asks for _BadgeApp_session
+```
+
+The session cookie is your live credential: export it in your shell, never commit it, never put
+it in a CI secret, and log out of bestpractices.dev when done to invalidate it.
+
 When a change adds, removes or alters a control — a CI gate, a workflow permission, the release
 process, a policy in `SECURITY.md` — update the matching `OSPS-*_status` and its `_justification`
 in the same pull request. Never mark something `Met` that cannot be pointed at in this repository.
