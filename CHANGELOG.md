@@ -26,6 +26,11 @@ All notable changes to this project are documented here. The format follows
 - `SECURITY.md`, `CODEOWNERS`, issue and pull request templates, code of conduct.
 - GitHub Actions pinned to commit SHAs instead of moving tags.
 
+### Fixed
+- Solid badges now take their label colour from the tone's ink token, so `cp-badge--solid` passes AA contrast on every skin (was 1.74:1 on the default accent).
+- `Panel` titles are `h2` instead of `h3`, so a panel placed after the page `h1` no longer skips a heading level.
+- The docs site declares an SVG favicon, so browsers stop requesting a missing `/favicon.ico` and logging a console error.
+
 ## [0.1.2] - 2026-11-17
 
 ### Changed

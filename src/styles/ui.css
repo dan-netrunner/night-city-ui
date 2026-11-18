@@ -614,11 +614,13 @@
 
 .cp-badge--neutral {
   --tone: var(--ink-dim);
+  --badge-ink: var(--bg);
   color: var(--ink-dim);
 }
 
 .cp-badge--accent {
   --tone: var(--accent);
+  --badge-ink: var(--accent-ink);
 }
 
 .cp-badge--ok {

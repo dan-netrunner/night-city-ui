@@ -87,7 +87,7 @@ describe("Panel", () => {
         <p>content</p>
       </Panel>,
     );
-    expect(screen.getByRole("heading", { name: "Terminal" }).tagName).toBe("H3");
+    expect(screen.getByRole("heading", { name: "Terminal" }).tagName).toBe("H2");
     expect(screen.getByText("// SYS.01")).toBeTruthy();
     expect(screen.getByText("content")).toBeTruthy();
     expect(screen.getByText("foot")).toBeTruthy();
